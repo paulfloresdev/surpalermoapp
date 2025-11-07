@@ -4,40 +4,32 @@ import NotFound from '../components/NotFound'; // Componente 404
 import Login from "../pages/public/Login.tsx";
 import DashboardLayout from "../components/layout/DashboardLayout.tsx";
 
-const Home = React.lazy(() => import("../pages/Home.tsx"));
-
+//  Socios
+const SociosPage = React.lazy(() => import("../pages/socios/SociosPage.tsx"));
+const UpdateSociosPage = React.lazy(() => import("../pages/socios/update/UpdateSociosPage.tsx"))
 
 const AppRoutes = () => (
     <Routes>
         <Route path="*" element={<NotFound />} />
-        <Route path="/login" element={
+        <Route path="/sia/login" element={
             <Suspense fallback={<div>Loading...</div>}>
                 <Login />
             </Suspense>
         } />
 
-        <Route
-            path="/"
-            element={
-                <React.Suspense fallback={<div>Loading...</div>}>
-                    <Home></Home>
-                </React.Suspense>
-            }
-        />
-
-        <Route path="/dashboard/*" element={<DashboardLayout />} key={"layout"}>
-            <Route index element={
+        <Route path="/sia" element={<DashboardLayout />} key={"layout"}>
+            <Route path="socios" element={
                 <Suspense fallback={<div>Loading...</div>}>
-                <Home />
+                    <SociosPage />
                 </Suspense>
             } />
-            <Route path="months" element={
+            <Route path="socios/:socioId" element={
                 <Suspense fallback={<div>Loading...</div>}>
-                <Home />
+                    <UpdateSociosPage />
                 </Suspense>
             } />
         </Route>
-        
+
     </Routes>
 );
 

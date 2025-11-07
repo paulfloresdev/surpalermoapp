@@ -95,8 +95,8 @@ createAuthRefreshInterceptor(axiosInstance, refreshAuthLogic, {
 
 class APIClient {
     get = <T = any>(
-        url: string, 
-        params?: Record<string, any>, 
+        url: string,
+        params?: Record<string, any>,
         config?: AxiosRequestConfig
     ): Promise<AxiosResponse<T>> => {
         const query = params ? `?${qs.stringify(params, { arrayFormat: 'comma' })}` : '';
@@ -104,31 +104,31 @@ class APIClient {
     };
 
     post = <T = any>(
-        url: string, 
-        data?: any, 
+        url: string,
+        data?: any,
         config?: AxiosRequestConfig
     ): Promise<AxiosResponse<T>> => {
         return axiosInstance.post(url, data, config);
     };
 
     put = <T = any>(
-        url: string, 
-        data?: any, 
+        url: string,
+        data?: any,
         config?: AxiosRequestConfig
     ): Promise<AxiosResponse<T>> => {
         return axiosInstance.put(url, data, config);
     };
 
     patch = <T = any>(
-        url: string, 
-        data?: any, 
+        url: string,
+        data?: any,
         config?: AxiosRequestConfig
     ): Promise<AxiosResponse<T>> => {
         return axiosInstance.patch(url, data, config);
     };
 
     delete = <T = any>(
-        url: string, 
+        url: string,
         config?: AxiosRequestConfig
     ): Promise<AxiosResponse<T>> => {
         return axiosInstance.delete(url, config);

@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
-import SideBar from "./SideBar";
-import BottomNav from "./BottomNav";
 import { Outlet, useLocation } from "react-router-dom";
+import CustomNavBar from "./CustomNavBar";
 
 const Layout: React.FC = () => {
     const location = useLocation();
@@ -25,19 +24,19 @@ const Layout: React.FC = () => {
     }, []);
 
     return (
-        <div className="flex min-h-screen bg-neutral-50">
-            <SideBar page={page} />
-            <div className="w-full p-6 max-h-screen">
-                <div className="h-full">
-                    <div className="w-full flex flex-row justify-between mb-8 md:hidden">
-                        <img src="/assets/favicon.png" alt="Logo" className="w-16" />
-                    </div>
-                    <div className="w-full h-full">
-                        <Outlet />
-                    </div>
+        // Contenedor principal que ocupa toda la altura del navegador (viewport)
+        <div className="flex flex-col h-screen bg-white">
+            {/* ESTE ES EL ENCABEZADO FIJO */}
+            <div className="w-full sticky top-0 z-10">
+                <CustomNavBar />
+            </div>
+
+            {/* Contenedor del contenido principal que crece y permite el scroll */}
+            <div className="flex-grow overflow-y-auto">
+                <div className="max-w-7xl mx-auto px-2 pt-6 pb-20">
+                    <Outlet />
                 </div>
             </div>
-            <BottomNav page={page} />
         </div>
     );
 };

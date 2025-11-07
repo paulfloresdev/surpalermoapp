@@ -2,8 +2,6 @@
 export interface User {
     id: number;
     name: string | null;
-    lastname: string | null;
-    phone: string | null;
     email: string | null;
     createdAt: string | null;
     updatedAt: string | null;
@@ -17,16 +15,12 @@ export interface LogInParams {
 
 export interface SignUpParams {
     name: string;
-    lastname: string;
-    phone: string;
     email: string;
     password: string;
 }
 
 export interface UpdateUserDataParams {
     name: string;
-    lastname: string;
-    phone: string;
     email: string;
 }
 

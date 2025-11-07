@@ -68,8 +68,7 @@ const authSlice = createSlice({
             if (
                 !state.user ||
                 state.user.id !== newUser.id ||
-                state.user.name !== newUser.name ||
-                state.user.lastname !== newUser.lastname
+                state.user.name !== newUser.name
                 // compara solo campos que importen
             ) {
                 state.user = newUser;

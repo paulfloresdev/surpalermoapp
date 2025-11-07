@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { Button, Divider, Input } from '@heroui/react';
+import { Button, Divider, Image, Input } from '@heroui/react';
 import { useNavigate } from 'react-router-dom';
 import { RootState } from '../../store/configStore/store';
 import { logInRequest } from '../../store/features/auth/authSlice';
-import DynamicFaIcon from '../../components/DynamicFaIcon';
 
 const Login: React.FC = () => {
     const dispatch = useDispatch();
@@ -18,16 +17,16 @@ const Login: React.FC = () => {
 
     const { user, loading, error } = useSelector(
         (state: RootState) => ({
-        user: state.auth.user,
-        loading: state.auth.loading,
-        error: state.auth.error
+            user: state.auth.user,
+            loading: state.auth.loading,
+            error: state.auth.error
         }),
     );
 
     // Redirección al dashboard si el login fue exitoso
     useEffect(() => {
         if (user) {
-            navigate('/dashboard');
+            navigate('/sia/socios');
         }
     }, [user, navigate]);
 
@@ -37,13 +36,17 @@ const Login: React.FC = () => {
     };
 
     return (
-        <form onSubmit={handleSubmit} className='h-dscreen w-screen flex flex-col justify-between items-center px-6 lg:px-0 pt-16 pb-8'>
-            <div className="w-full lg:w-1/4 flex flex-col items-start justify-start gap-y-8">
-                <span className='text-3xl font-semibold'>Inicio de sesión</span>
-                <div className='w-full flex flex-col gap-y-6'>
+        <form onSubmit={handleSubmit} className='h-dscreen w-screen flex flex-row justify-center items-center p-8 bg-gray-50'>
+            <div className="w-full lg:w-1/3 h-full flex flex-col items-start justify-start gap-y-8 bg-white p-8 rounded-3xl shadow-xl shadow-gray-200">
+                <div className='w-full flex flex-col justify-center items-center gap-y-4'>
+                    <Image src='/assets/favicon.png' className='w-32' />
+                    <span className='text-lg font-semibold text-center'>Centro Psicosocial Sur Palermo <br></br> SIA</span>
+                </div>
+                <Divider className='mb-4' />
+                <div className='w-full flex flex-col gap-y-8'>
                     <Input
                         required
-                        size='lg'
+                        size='md'
                         variant='bordered'
                         label="Correo electrónico"
                         placeholder="usuario@ejemplo.com"
@@ -55,7 +58,7 @@ const Login: React.FC = () => {
                     <div className='w-full flex flex-col items-end space-y-2'>
                         <Input
                             required
-                            size='lg'
+                            size='md'
                             variant='bordered'
                             label='Contraseña'
                             placeholder='••••••••'
@@ -74,22 +77,22 @@ const Login: React.FC = () => {
                             }
                         />
                         <button>
-                            <span className="bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 bg-clip-text text-transparent text-sm font-semibold hover:text-black">
+                            <span className="text-sm font-semibold hover:underline">
                                 ¿Olvidaste tu contraseña?
                             </span>
                         </button>
                     </div>
                 </div>
-                
-                
-                
+
+
+
                 <Button
-                    size='lg'
+                    size='md'
                     type="submit"
                     variant="shadow"
-                    color='primary'
+                    color='default'
                     radius='lg'
-                    className="w-full bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 mt-3"
+                    className="w-full mt-3 bg-black text-white "
                     isLoading={loading}
                 >
                     {loading ? 'Entrando...' : 'Entrar'}
@@ -97,47 +100,8 @@ const Login: React.FC = () => {
 
                 {error && <div className='w-full text-center text-rose-600 text-sm'>{error}</div>}
 
-                <div className='w-full flex flex-row justify-center items-center space-x-2'>
-                    <div className='w-full'>
-                        <Divider/>
-                    </div>
-                    <span className='w-full text-sm text-center'>O ingresar con</span>
-                    <div className='w-full'>
-                        <Divider/>
-                    </div>
-                </div>
-
-                <div className='w-full flex flex-row gap-x-5'>
-                    <Button
-                        size='lg'
-                        radius='lg'
-                        variant='flat'
-                        className='w-full'
-                    >
-                        <DynamicFaIcon name={'FaFacebook'} className='text-gray-800'/>
-                        <span className='text-sm'>Facebook</span>
-                    </Button>
-                    <Button
-                        size='lg'
-                        radius='lg'
-                        variant='flat'
-                        className='w-full'
-                    >
-                        <DynamicFaIcon name={'FaGoogle'} className='text-gray-800'/>
-                        <span className='text-sm'>Google</span>
-                    </Button>
-                </div>
             </div>
-            <div className='w-full text-center'>
-                    <span className='text-sm'>¿No tienes cuenta? </span>
-                    <button>
-                        <span className="bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 bg-clip-text text-transparent text-sm font-semibold hover:text-">
-                            Registrate aquí
-                        </span>
-                    </button>
-                </div>
         </form>
-        
     );
 };
 

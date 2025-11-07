@@ -12,7 +12,7 @@ const DynamicFaIcon: React.FC<Props> = ({ name, size = 20, className }) => {
     const Icon = FaIcons[name as keyof typeof FaIcons];
     if (!Icon) return null;
 
-    return <Icon size={size} className={`text-gray-400 ${className} `} />;
+    return <Icon size={size} className={`text-gray-500 ${className} `} />;
 };
 
 export default DynamicFaIcon;

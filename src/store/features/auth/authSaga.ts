@@ -9,7 +9,6 @@ import {
     signUpFailure,
     logOutRequest,
     logOutSuccess,
-    logOutFailure,
     meRequest,
     meSuccess,
     meFailure
