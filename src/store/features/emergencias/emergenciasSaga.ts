@@ -1,58 +1,64 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
-import { destroyEmergenciaFailure, destroyEmergenciaRequest, destroyEmergenciaSuccess, indexEmergenciasFailure, indexEmergenciasRequest, indexEmergenciasSuccess, paginatedEmergenciasFailure, paginatedEmergenciasRequest, paginatedEmergenciasSuccess, showEmergenciaFailure, showEmergenciaRequest, showEmergenciaSuccess, storeEmergenciaFailure, storeEmergenciaRequest, storeEmergenciaSuccess, updateEmergenciaFailure, updateEmergenciaRequest, updateEmergenciaSuccess } from './emergenciasSlice';
+import { clearEmergenciasRequest, destroyEmergenciaFailure, destroyEmergenciaRequest, destroyEmergenciaSuccess, indexEmergenciasFailure, indexEmergenciasRequest, indexEmergenciasSuccess, paginatedEmergenciasFailure, paginatedEmergenciasRequest, paginatedEmergenciasSuccess, showEmergenciaFailure, showEmergenciaRequest, showEmergenciaSuccess, storeEmergenciaFailure, storeEmergenciaRequest, storeEmergenciaSuccess, updateEmergenciaFailure, updateEmergenciaRequest, updateEmergenciaSuccess } from './emergenciasSlice';
 import { destroyEmergenciaAPI, indexEmergenciasAPI, paginatedEmergenciasAPI, showEmergenciaAPI, storeEmergenciaAPI, updateEmergenciaAPI } from '../../../helper/api/backend';
 
 function* indexEmergenciasSaga(): Generator<any, any, any> {
     try {
+        yield put(clearEmergenciasRequest());
         const res = yield call(indexEmergenciasAPI);
         yield put(indexEmergenciasSuccess(res.data));
     } catch (error: any) {
-        yield put(indexEmergenciasFailure(error?.response?.message || 'Error'));
+        yield put(indexEmergenciasFailure(error?.response?.data?.message || 'Error'));
     }
 }
 
 function* paginatedEmergenciasSaga(action: any): Generator<any, any, any> {
     try {
+        yield put(clearEmergenciasRequest());
         const res = yield call(paginatedEmergenciasAPI, action.payload);
         yield put(paginatedEmergenciasSuccess(res.data));
     } catch (error: any) {
-        yield put(paginatedEmergenciasFailure(error?.response?.message || 'Error'))
+        yield put(paginatedEmergenciasFailure(error?.response?.data?.message || 'Error'))
     }
 }
 
 function* storeEmergenciaSaga(action: any): Generator<any, any, any> {
     try {
+        yield put(clearEmergenciasRequest());
         const res = yield call(storeEmergenciaAPI, action.payload);
         yield put(storeEmergenciaSuccess(res.data));
     } catch (error: any) {
-        yield put(storeEmergenciaFailure(error?.response?.message || 'Error'));
+        yield put(storeEmergenciaFailure(error?.response?.data?.message || 'Error'));
     }
 }
 
 function* showEmergenciaSaga(action: any): Generator<any, any, any> {
     try {
+        yield put(clearEmergenciasRequest());
         const res = yield call(showEmergenciaAPI, action.payload);
         yield put(showEmergenciaSuccess(res.data));
     } catch (error: any) {
-        yield put(showEmergenciaFailure(error?.response?.message || 'Error'));
+        yield put(showEmergenciaFailure(error?.response?.data?.message || 'Error'));
     }
 }
 
 function* updateEmergenciaSaga(action: any): Generator<any, any, any> {
     try {
+        yield put(clearEmergenciasRequest());
         const res = yield call(updateEmergenciaAPI, action.payload);
         yield put(updateEmergenciaSuccess(res.data));
     } catch (error: any) {
-        yield put(updateEmergenciaFailure(error?.response?.message || 'Error'));
+        yield put(updateEmergenciaFailure(error?.response?.data?.message || 'Error'));
     }
 }
 
 function* destroyEmergenciaSaga(action: any): Generator<any, any, any> {
     try {
+        yield put(clearEmergenciasRequest());
         const res = yield call(destroyEmergenciaAPI, action.payload);
         yield put(destroyEmergenciaSuccess(res.data));
     } catch (error: any) {
-        yield put(destroyEmergenciaFailure(error?.response?.message || 'Error'));
+        yield put(destroyEmergenciaFailure(error?.response?.data?.message || 'Error'));
     }
 }
 

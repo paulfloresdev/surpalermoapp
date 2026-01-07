@@ -103,7 +103,7 @@ const SearchSociosTable: React.FC<SearchSociosTableProps> = ({ items, onOrderCha
                         <TableRow
                             className='hover:bg-gray-100 cursor-pointer !rounded-lg text-gray-600 hover:text-black'
                             as={Link}
-                            href={`/sia/socios/${item.id}`}
+                            href={`/sia/socios/${item.id}?tab=personal-data`}
                             target='_blank'
                         >
                             <TableCell className='rounded-l-xl'>
@@ -116,12 +116,12 @@ const SearchSociosTable: React.FC<SearchSociosTableProps> = ({ items, onOrderCha
                                     {item.activo ? "Activo" : "Inactivo"}
                                 </Button>
                             </TableCell>
-                            <TableCell>{item.dni}</TableCell>
-                            <TableCell>{item.apellido_paterno}</TableCell>
-                            <TableCell>{item.apellido_materno}</TableCell>
-                            <TableCell>{`${item.nombre} ${item.segundo_nombre}`}</TableCell>
-                            <TableCell>{item.telefono}</TableCell>
-                            <TableCell className='rounded-r-xl'>{item.celular}</TableCell>
+                            <TableCell>{item.dni ?? ""}</TableCell>
+                            <TableCell>{item.apellido_paterno ?? ""}</TableCell>
+                            <TableCell>{item.apellido_materno ?? ""}</TableCell>
+                            <TableCell>{`${item.nombre ?? ""} ${item.segundo_nombre ?? ""}`}</TableCell>
+                            <TableCell>{item.telefono ?? ""}</TableCell>
+                            <TableCell className='rounded-r-xl'>{item.celular ?? ""}</TableCell>
                         </TableRow>
                     ))}
             </TableBody>

@@ -5,26 +5,43 @@ import { PaginatedItems } from "../../../types/responses";
 
 const initialState: CrudState<Programa> = {
     data: null,
+    message: null,
     loading: false,
     error: null,
+    indexSuccess: null,
+    storeSuccess: null,
+    showSuccess: null,
+    updateSuccess: null,
+    destroySuccess: null,
 }
 
 const programasSlice = createSlice({
     name: 'programas',
     initialState,
     reducers: {
+        //  CLEAR
+        clearProgramasRequest: (state) => {
+            state.indexSuccess = null;
+            state.storeSuccess = null;
+            state.showSuccess = null;
+            state.updateSuccess = null;
+            state.destroySuccess = null;
+        },
+
         //  INDEX
-        indexProgramasRequest: (state) => {
+        indexProgramasRequest: (state, _action: PayloadAction<string | undefined>) => {
             state.loading = true;
             state.error = null;
         },
         indexProgramasSuccess: (state, action: PayloadAction<Programa[]>) => {
             state.loading = false;
             state.data = action.payload;
+            state.indexSuccess = true;
         },
         indexProgramasFailure: (state, action: PayloadAction<string>) => {
             state.loading = false;
             state.error = action.payload;
+            state.indexSuccess = false;
         },
 
         //  PAGINATED
@@ -35,10 +52,12 @@ const programasSlice = createSlice({
         paginatedProgramasSuccess: (state, action: PayloadAction<PaginatedItems<Programa>>) => {
             state.loading = false;
             state.data = action.payload;
+            state.indexSuccess = true;
         },
         paginatedProgramasFailure: (state, action: PayloadAction<string>) => {
             state.loading = false;
             state.error = action.payload;
+            state.indexSuccess = false;
         },
 
         //  STORE
@@ -49,10 +68,12 @@ const programasSlice = createSlice({
         storeProgramaSuccess: (state, action: PayloadAction<Programa>) => {
             state.loading = false;
             state.data = action.payload;
+            state.storeSuccess = true;
         },
         storeProgramaFailure: (state, action: PayloadAction<string>) => {
             state.loading = false;
             state.error = action.payload;
+            state.storeSuccess = false;
         },
 
         //  SHOW
@@ -63,10 +84,12 @@ const programasSlice = createSlice({
         showProgramaSuccess: (state, action: PayloadAction<Programa>) => {
             state.loading = false;
             state.data = action.payload;
+            state.showSuccess = true;
         },
         showProgramaFailure: (state, action: PayloadAction<string>) => {
             state.loading = false;
             state.error = action.payload;
+            state.showSuccess = false;
         },
 
         //  UPDATE
@@ -77,10 +100,12 @@ const programasSlice = createSlice({
         updateProgramaSuccess: (state, action: PayloadAction<Programa>) => {
             state.loading = false;
             state.data = action.payload;
+            state.updateSuccess = true;
         },
         updateProgramaFailure: (state, action: PayloadAction<string>) => {
             state.loading = false;
             state.error = action.payload;
+            state.updateSuccess = false;
         },
 
         //  DESTROY
@@ -91,15 +116,18 @@ const programasSlice = createSlice({
         destroyProgramaSuccess: (state) => {
             state.loading = false;
             state.data = null;
+            state.destroySuccess = true;
         },
         destroyProgramaFailure: (state, action: PayloadAction<string>) => {
             state.loading = false;
             state.error = action.payload;
+            state.destroySuccess = false;
         },
     }
 });
 
 export const {
+    clearProgramasRequest,
     indexProgramasRequest,
     indexProgramasSuccess,
     indexProgramasFailure,

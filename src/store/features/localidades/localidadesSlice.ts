@@ -5,14 +5,29 @@ import { PaginatedItems } from "../../../types/responses";
 
 const initialState: CrudState<Localidad> = {
     data: null,
+    message: null,
     loading: false,
     error: null,
+    indexSuccess: null,
+    storeSuccess: null,
+    showSuccess: null,
+    updateSuccess: null,
+    destroySuccess: null,
 }
 
 const localidadesSlice = createSlice({
     name: 'localidades',
     initialState,
     reducers: {
+        //  CLEAR
+        clearLocalidadesRequest: (state) => {
+            state.indexSuccess = null;
+            state.storeSuccess = null;
+            state.showSuccess = null;
+            state.updateSuccess = null;
+            state.destroySuccess = null;
+        },
+
         //  INDEX
         indexLocalidadesRequest: (state) => {
             state.loading = true;
@@ -21,10 +36,12 @@ const localidadesSlice = createSlice({
         indexLocalidadesSuccess: (state, action: PayloadAction<Localidad[]>) => {
             state.loading = false;
             state.data = action.payload;
+            state.indexSuccess = true;
         },
         indexLocalidadesFailure: (state, action: PayloadAction<string>) => {
             state.loading = false;
             state.error = action.payload;
+            state.indexSuccess = false;
         },
 
         // PAGINATED
@@ -35,10 +52,12 @@ const localidadesSlice = createSlice({
         paginatedLocalidadesSuccess: (state, action: PayloadAction<PaginatedItems<Localidad>>) => {
             state.loading = false;
             state.data = action.payload;
+            state.indexSuccess = true;
         },
         paginatedLocalidadesFailure: (state, action: PayloadAction<string>) => {
             state.loading = false;
             state.error = action.payload;
+            state.indexSuccess = false;
         },
 
         // STORE
@@ -49,10 +68,12 @@ const localidadesSlice = createSlice({
         storeLocalidadSuccess: (state, action: PayloadAction<Localidad>) => {
             state.loading = false;
             state.data = action.payload;
+            state.storeSuccess = true;
         },
         storeLocalidadFailure: (state, action: PayloadAction<string>) => {
             state.loading = false;
             state.error = action.payload;
+            state.storeSuccess = false;
         },
 
         // SHOW
@@ -63,10 +84,12 @@ const localidadesSlice = createSlice({
         showLocalidadSuccess: (state, action: PayloadAction<Localidad>) => {
             state.loading = false;
             state.data = action.payload;
+            state.showSuccess = true;
         },
         showLocalidadFailure: (state, action: PayloadAction<string>) => {
             state.loading = false;
             state.error = action.payload;
+            state.showSuccess = false;
         },
 
         // UPDATE
@@ -77,10 +100,12 @@ const localidadesSlice = createSlice({
         updateLocalidadSuccess: (state, action: PayloadAction<Localidad>) => {
             state.loading = false;
             state.data = action.payload;
+            state.updateSuccess = true;
         },
         updateLocalidadFailure: (state, action: PayloadAction<string>) => {
             state.loading = false;
             state.error = action.payload;
+            state.updateSuccess = false;
         },
 
         // DESTROY
@@ -91,15 +116,18 @@ const localidadesSlice = createSlice({
         destroyLocalidadSuccess: (state) => {
             state.loading = false;
             state.data = null;
+            state.destroySuccess = true;
         },
         destroyLocalidadFailure: (state, action: PayloadAction<string>) => {
             state.loading = false;
             state.error = action.payload;
+            state.destroySuccess = false;
         },
     }
 });
 
 export const {
+    clearLocalidadesRequest,
     indexLocalidadesRequest,
     indexLocalidadesSuccess,
     indexLocalidadesFailure,

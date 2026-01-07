@@ -14,3 +14,16 @@ export const MUTUALISTAS = "/mutualistas"
 export const EMERGENCIAS = "/emergencias"
 export const PROGRAMAS = "/programas"
 export const SOCIOPROGAMAPIVOTS = "/socio-programa-pivots"
+export const GRUPOS = "/grupos"
+export const SOCIOGRUPOPIVOTS = "/socio-grupo-pivots"
+
+//  FORMS
+export const AFORMS = "/a-forms"
+export const BFORMS = "/b-forms"
+export const CFORMS = "/c-forms"
+export const DFORMS = "/d-forms"
+export const EFORMS = "/e-forms"
+export const FFORMS = "/f-forms"
+export const GFORMS = "/g-forms"
+export const HFORMS = "/h-forms"
+

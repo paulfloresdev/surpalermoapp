@@ -1,4 +1,4 @@
-import { Entity, UpdateParams } from "./commons";
+import { Entity, Paginated, UpdateParams } from "./commons";
 
 export interface Mutualista extends Entity {
     nombre: string;
@@ -8,8 +8,17 @@ export interface Mutualista extends Entity {
 
 export interface MutualistaBody {
     nombre: string;
-    telefono: string;
-    direccion: string;
+    telefono: string | undefined;
+    direccion: string | undefined;
 }
 
 export interface UpdateMutualistaParams extends UpdateParams<MutualistaBody> { }
+
+export interface SearchMutualistasBody extends Paginated {
+    search: undefined | string;
+}
+
+export interface SearchMutualistasParams {
+    page: undefined | number;
+    body: SearchMutualistasBody;
+}

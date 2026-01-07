@@ -2,17 +2,17 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store/configStore/store";
 import { SearchSociosBody, SearchSociosParams, Socio } from "../../types/socios";
-import { searchSociosRequest } from "../../store/features/socios/search/searchSociosSlice";
 import { Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Input, Pagination, Select, SelectItem } from "@heroui/react";
 import DynamicFaIcon from "../../components/DynamicFaIcon";
 import { activeFilter, perPageOptions } from "../../types/combos";
 import SearchSociosTable from "../../components/layout/SearchSociosTable";
 import { PaginatedState } from "../../types/commons";
+import { searchSociosRequest } from "../../store/features/socios/sociosSlice";
 
 const SociosPage: React.FC = () => {
     const dispatch = useDispatch();
 
-    const { data, loading, error } = useSelector((state: RootState) => state.searchSocios as PaginatedState<Socio>);
+    const { data, loading, error } = useSelector((state: RootState) => state.socios as PaginatedState<Socio>);
     const [page, setPage] = useState<undefined | number>(undefined);
     const [order, setOrder] = useState<undefined | number>(undefined);
     const [search, setSearch] = useState<undefined | string>(undefined);
@@ -51,7 +51,7 @@ const SociosPage: React.FC = () => {
     };
 
     const updateSearch = () => {
-        setPage(0);
+        setPage(1);
         var params = buildParams();
         dispatch(searchSociosRequest(params));
     }
@@ -67,9 +67,22 @@ const SociosPage: React.FC = () => {
                         variant='flat'
                         placeholder="Búsqueda"
                         className="w-96"
-                        endContent={<DynamicFaIcon name="FaSearch" size={16} className="text-gray-300" />}
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
+                        onKeyDown={(e) => {
+                            if (e.key === "Enter") {
+                                e.preventDefault();
+                                updateSearch();
+                            }
+                        }}
+                        endContent={
+                            <DynamicFaIcon
+                                name="FaSearch"
+                                size={16}
+                                btnInput={true}
+                                onClick={updateSearch}
+                            />
+                        }
                     />
                     <Select
                         size="sm"
@@ -90,20 +103,12 @@ const SociosPage: React.FC = () => {
                             </SelectItem>
                         ))}
                     </Select>
-                    <Button
-                        size="sm"
-                        variant="solid"
-                        className="text-white bg-emerald-500 hover:bg-emerald-400"
-                        onPress={updateSearch}
-                    >
-                        Buscar
-                    </Button>
                     <Dropdown size="sm">
                         <DropdownTrigger>
                             <Button
                                 disableRipple
-                                className="bg-gray-800 text-white"
-                                endContent={<DynamicFaIcon name="FaAngleDown" size={16} className="text-gray-50" />}
+                                className="bg-cyan-900 text-white"
+                                endContent={<DynamicFaIcon name="FaAngleDown" size={16} className="text-white" />}
                                 variant="solid"
                                 size="sm"
                             >
@@ -125,6 +130,15 @@ const SociosPage: React.FC = () => {
                             </DropdownItem>
                         </DropdownMenu>
                     </Dropdown>
+                    <Button
+                        disableRipple
+                        className="bg-emerald-500 text-white"
+                        endContent={<DynamicFaIcon name="FaPlus" size={16} className="text-white" />}
+                        variant="solid"
+                        size="sm"
+                    >
+                        Agregar
+                    </Button>
                 </div>
                 <div className="">
                     {

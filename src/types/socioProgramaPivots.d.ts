@@ -6,6 +6,7 @@ export interface SocioProgramaPivot extends Entity {
     costo_mensual: number | null;
     baja_actividad: boolean;
     fecha_baja: Date | null;
+    motivo_baja: number | null;
     socio_id: number;
     programa_id: number;
     programa: Programa | null | undefined;
@@ -15,6 +16,7 @@ export interface SocioProgramaPivotBody {
     costo_mensual: number | undefined;
     baja_actividad: boolean;
     fecha_baja: Date | undefined;
+    motivo_baja: number | undefined;
     socio_id: number;
     programa_id: number;
 }

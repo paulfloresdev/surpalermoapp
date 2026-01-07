@@ -1,31 +1,23 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../../store/configStore/store";
 import TabCard from "../../../../components/TabCard";
 import { Input, Select, SelectItem, Textarea } from "@heroui/react";
 import { setUpdateSocioForm } from "../../../../store/features/forms/UpdateSocioFormSlice";
-import { BoolParse, DateToInput, YNParse } from "../../../../helper/utils/Format";
+import { BoolParse, DateToInput, SKey, YNParse } from "../../../../helper/utils/Format";
 import { SexCombo, YNCombo } from "../../../../types/combos";
 import { ListState } from "../../../../types/commons";
 import { Departamento } from "../../../../types/departamentos";
 import CustomSkeleton from "../../../../components/CustomSkeleton";
 import { Localidad } from "../../../../types/localidades";
 
-export interface PersonalSocioTabProps {
-}
-
-const PersonalSocioTab: React.FC<PersonalSocioTabProps> = () => {
+const PersonalSocioTab: React.FC = () => {
     const dispatch = useDispatch();
 
     const { data } = useSelector((state: RootState) => state.updateSocioForm);
 
     const departamentos = useSelector((state: RootState) => state.departamentos as ListState<Departamento>);
     const localidades = useSelector((state: RootState) => state.localidades as ListState<Localidad>);
-
-
-    useEffect(() => {
-
-    }, []);
 
     return (
         <TabCard>
@@ -42,7 +34,7 @@ const PersonalSocioTab: React.FC<PersonalSocioTabProps> = () => {
             <Select
                 required
                 placeholder="Activo"
-                label="Activo"
+                label="Activo*"
                 labelPlacement="outside"
                 value={YNParse(data?.activo)}
                 selectedKeys={YNParse(data?.activo)}
@@ -67,7 +59,7 @@ const PersonalSocioTab: React.FC<PersonalSocioTabProps> = () => {
             <Input
                 required
                 placeholder="Nombre"
-                label="Nombre"
+                label="Nombre*"
                 labelPlacement="outside"
                 value={data?.nombre}
                 onChange={(e) => {
@@ -114,7 +106,7 @@ const PersonalSocioTab: React.FC<PersonalSocioTabProps> = () => {
             <Select
                 required
                 placeholder="Con BPS"
-                label="Con BPS"
+                label="Con BPS*"
                 labelPlacement="outside"
                 value={YNParse(data?.con_bps)}
                 selectedKeys={YNParse(data?.con_bps)}
@@ -172,7 +164,7 @@ const PersonalSocioTab: React.FC<PersonalSocioTabProps> = () => {
                             label="Departamento"
                             labelPlacement="outside"
                             value={data?.departamento_id?.toString() ?? ""}
-                            selectedKeys={data?.departamento_id?.toString()}
+                            selectedKeys={SKey(data?.departamento_id)}
                             onChange={(e) => {
                                 dispatch(setUpdateSocioForm({ key: "departamento_id", value: parseInt(e.target.value) }));
                             }}
@@ -190,10 +182,10 @@ const PersonalSocioTab: React.FC<PersonalSocioTabProps> = () => {
                         <Select
                             required
                             placeholder="Localidad"
-                            label="Localidad"
+                            label="Localidad*"
                             labelPlacement="outside"
                             value={data?.localidad_id?.toString() ?? ""}
-                            selectedKeys={data?.localidad_id?.toString()}
+                            selectedKeys={SKey(data?.localidad_id)}
                             onChange={(e) => {
                                 dispatch(setUpdateSocioForm({ key: "localidad_id", value: parseInt(e.target.value) }));
                             }}
@@ -235,7 +227,7 @@ const PersonalSocioTab: React.FC<PersonalSocioTabProps> = () => {
             <Select
                 required
                 placeholder="Sexo"
-                label="Sexo"
+                label="Sexo*"
                 labelPlacement="outside"
                 value={data?.sexo?.toString()}
                 selectedKeys={data?.sexo?.toString()}

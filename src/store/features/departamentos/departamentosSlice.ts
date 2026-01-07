@@ -1,30 +1,48 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Departamento, DepartamentoBody, UpdateDepartamentoParams } from "../../../types/departamentos";
 import { PaginatedItems } from "../../../types/responses";
-import { CrudState, PaginatedParams } from "../../../types/commons";
+import { CrudState, PaginatedParams, Response } from "../../../types/commons";
 
 const initialState: CrudState<Departamento> = {
     data: null,
+    message: null,
     loading: false,
     error: null,
+    indexSuccess: null,
+    storeSuccess: null,
+    showSuccess: null,
+    updateSuccess: null,
+    destroySuccess: null,
 }
 
 const departamentosSlice = createSlice({
     name: 'departamentos',
     initialState,
     reducers: {
+        //  CLEAR
+        clearDepartamentosRequest: (state) => {
+            state.indexSuccess = null;
+            state.storeSuccess = null;
+            state.showSuccess = null;
+            state.updateSuccess = null;
+            state.destroySuccess = null;
+        },
+
         //  INDEX
         indexDepartamentosRequest: (state) => {
             state.loading = true;
             state.error = null;
         },
-        indexDepartamentosSuccess: (state, action: PayloadAction<Departamento[]>) => {
+        indexDepartamentosSuccess: (state, action: PayloadAction<Response<Departamento[]>>) => {
             state.loading = false;
-            state.data = action.payload;
+            state.data = action.payload.data;
+            state.message = action.payload.message;
+            state.indexSuccess = true;
         },
         indexDepartamentosFailure: (state, action: PayloadAction<string>) => {
             state.loading = false;
             state.error = action.payload;
+            state.indexSuccess = false;
         },
 
         //  PAGINATED
@@ -32,13 +50,16 @@ const departamentosSlice = createSlice({
             state.loading = true;
             state.error = null;
         },
-        paginatedDepartamentosSuccess: (state, action: PayloadAction<PaginatedItems<Departamento>>) => {
+        paginatedDepartamentosSuccess: (state, action: PayloadAction<Response<PaginatedItems<Departamento>>>) => {
             state.loading = false;
-            state.data = action.payload;
+            state.data = action.payload.data;
+            state.message = action.payload.message;
+            state.indexSuccess = true;
         },
         paginatedDepartamentosFailure: (state, action: PayloadAction<string>) => {
             state.loading = false;
             state.error = action.payload;
+            state.indexSuccess = false;
         },
 
         //  STORE
@@ -46,13 +67,16 @@ const departamentosSlice = createSlice({
             state.loading = true;
             state.error = null;
         },
-        storeDepartamentoSuccess: (state, action: PayloadAction<Departamento>) => {
+        storeDepartamentoSuccess: (state, action: PayloadAction<Response<Departamento>>) => {
             state.loading = false;
-            state.data = action.payload;
+            state.data = action.payload.data;
+            state.message = action.payload.message;
+            state.storeSuccess = true;
         },
         storeDepartamentoFailure: (state, action: PayloadAction<string>) => {
             state.loading = false;
             state.error = action.payload;
+            state.storeSuccess = false;
         },
 
         //  SHOW
@@ -60,13 +84,16 @@ const departamentosSlice = createSlice({
             state.loading = true;
             state.error = null;
         },
-        showDepartamentoSuccess: (state, action: PayloadAction<Departamento>) => {
+        showDepartamentoSuccess: (state, action: PayloadAction<Response<Departamento>>) => {
             state.loading = false;
-            state.data = action.payload;
+            state.data = action.payload.data;
+            state.message = action.payload.message;
+            state.showSuccess = true;
         },
         showDepartamentoFailure: (state, action: PayloadAction<string>) => {
             state.loading = false;
             state.error = action.payload;
+            state.showSuccess = false;
         },
 
         //  UPDATE
@@ -74,13 +101,16 @@ const departamentosSlice = createSlice({
             state.loading = true;
             state.error = null;
         },
-        updateDepartamentoSuccess: (state, action: PayloadAction<Departamento>) => {
+        updateDepartamentoSuccess: (state, action: PayloadAction<Response<Departamento>>) => {
             state.loading = false;
-            state.data = action.payload;
+            state.data = action.payload.data;
+            state.message = action.payload.message;
+            state.updateSuccess = true;
         },
         updateDepartamentoFailure: (state, action: PayloadAction<string>) => {
             state.loading = false;
             state.error = action.payload;
+            state.updateSuccess = false;
         },
 
         //  DESTROY
@@ -88,18 +118,22 @@ const departamentosSlice = createSlice({
             state.loading = true;
             state.error = null;
         },
-        destroyDepartamentoSuccess: (state) => {
+        destroyDepartamentoSuccess: (state, action: PayloadAction<string>) => {
             state.loading = false;
             state.data = null;
+            state.message = action.payload;
+            state.destroySuccess = true;
         },
         destroyDepartamentoFailure: (state, action: PayloadAction<string>) => {
             state.loading = false;
             state.error = action.payload;
+            state.destroySuccess = false;
         },
     }
 });
 
 export const {
+    clearDepartamentosRequest,
     indexDepartamentosRequest,
     indexDepartamentosSuccess,
     indexDepartamentosFailure,

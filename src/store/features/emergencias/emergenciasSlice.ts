@@ -5,14 +5,29 @@ import { PaginatedItems } from "../../../types/responses";
 
 const initialState: CrudState<Emergencia> = {
     data: null,
+    message: null,
     loading: false,
     error: null,
+    indexSuccess: null,
+    storeSuccess: null,
+    showSuccess: null,
+    updateSuccess: null,
+    destroySuccess: null,
 }
 
 const emergenciasSlice = createSlice({
     name: 'emergencias',
     initialState,
     reducers: {
+        //  CLEAR
+        clearEmergenciasRequest: (state) => {
+            state.indexSuccess = null;
+            state.storeSuccess = null;
+            state.showSuccess = null;
+            state.updateSuccess = null;
+            state.destroySuccess = null;
+        },
+
         //  INDEX
         indexEmergenciasRequest: (state) => {
             state.loading = true;
@@ -21,10 +36,12 @@ const emergenciasSlice = createSlice({
         indexEmergenciasSuccess: (state, action: PayloadAction<Emergencia[]>) => {
             state.loading = false;
             state.data = action.payload;
+            state.indexSuccess = true;
         },
         indexEmergenciasFailure: (state, action: PayloadAction<string>) => {
             state.loading = false;
             state.error = action.payload;
+            state.indexSuccess = false;
         },
 
         //  PAGINATED
@@ -35,10 +52,12 @@ const emergenciasSlice = createSlice({
         paginatedEmergenciasSuccess: (state, action: PayloadAction<PaginatedItems<Emergencia>>) => {
             state.loading = false;
             state.data = action.payload;
+            state.indexSuccess = true;
         },
         paginatedEmergenciasFailure: (state, action: PayloadAction<string>) => {
             state.loading = false;
             state.error = action.payload;
+            state.indexSuccess = false;
         },
 
         //  STORE
@@ -49,10 +68,12 @@ const emergenciasSlice = createSlice({
         storeEmergenciaSuccess: (state, action: PayloadAction<Emergencia>) => {
             state.loading = false;
             state.data = action.payload;
+            state.storeSuccess = true;
         },
         storeEmergenciaFailure: (state, action: PayloadAction<string>) => {
             state.loading = false;
             state.error = action.payload;
+            state.storeSuccess = false;
         },
 
         // SHOW
@@ -63,10 +84,12 @@ const emergenciasSlice = createSlice({
         showEmergenciaSuccess: (state, action: PayloadAction<Emergencia>) => {
             state.loading = false;
             state.data = action.payload;
+            state.showSuccess = true;
         },
         showEmergenciaFailure: (state, action: PayloadAction<string>) => {
             state.loading = false;
             state.error = action.payload;
+            state.showSuccess = false;
         },
 
         // UPDATE
@@ -77,10 +100,12 @@ const emergenciasSlice = createSlice({
         updateEmergenciaSuccess: (state, action: PayloadAction<Emergencia>) => {
             state.loading = false;
             state.data = action.payload;
+            state.updateSuccess = true;
         },
         updateEmergenciaFailure: (state, action: PayloadAction<string>) => {
             state.loading = false;
             state.error = action.payload;
+            state.updateSuccess = false;
         },
 
         // DESTROY
@@ -91,15 +116,18 @@ const emergenciasSlice = createSlice({
         destroyEmergenciaSuccess: (state) => {
             state.loading = false;
             state.data = null;
+            state.destroySuccess = true;
         },
         destroyEmergenciaFailure: (state, action: PayloadAction<string>) => {
             state.loading = false;
             state.error = action.payload;
+            state.destroySuccess = false;
         },
     }
 });
 
 export const {
+    clearEmergenciasRequest,
     indexEmergenciasRequest,
     indexEmergenciasSuccess,
     indexEmergenciasFailure,

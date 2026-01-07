@@ -7,7 +7,7 @@ export interface TabCardProps {
 
 const TabCard: React.FC<TabCardProps> = ({ children }) => {
     return (
-        <Card className="w-full grid grid-cols-3 gap-x-10 gap-y-10 p-10">
+        <Card className="w-full grid grid-cols-3 gap-8 p-10">
             {children}
         </Card>
     );

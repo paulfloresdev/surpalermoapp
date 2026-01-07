@@ -114,9 +114,9 @@ const CustomNavBar: React.FC = () => {
                         </DropdownItem>
                         <DropdownItem
                             key="sociedades-medicas"
-                            onClick={() => navigate('/sia/salud/sociedades-medicas')}
+                            onClick={() => navigate('/sia/salud/mutualistas')}
                         >
-                            Sociedades médicas
+                            Mutualistas
                         </DropdownItem>
                     </DropdownMenu>
                 </Dropdown>
