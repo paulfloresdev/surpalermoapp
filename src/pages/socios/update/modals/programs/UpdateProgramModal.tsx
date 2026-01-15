@@ -165,7 +165,7 @@ const UpdateSocioProgramModal: React.FC<UpdateSocioProgramProps> = ({ item, valu
                                 <Select
                                     isInvalid={checkMotivoBaja}
                                     label="Motivo de baja"
-                                    labelPlacement="outside-left"
+                                    labelPlacement="outside"
                                     value={motivoBaja?.toString()}
                                     selectedKeys={motivoBaja?.toString()}
                                     onChange={(e) => {

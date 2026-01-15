@@ -10,7 +10,7 @@ import { PaginatedState } from "../../../../types/commons";
 import { SearchSocioGrupoPivotsParams, SocioGrupoPivot } from "../../../../types/socioGrupoPivots";
 import { searchSocioGrupoPivotsRequest } from "../../../../store/features/socioGrupoPivots/socioGrupoPivotsSlice";
 import DynamicFaIcon from "../../../../components/DynamicFaIcon";
-import { perPageOptions } from "../../../../types/combos";
+import { MotivoBajaPrograma, perPageOptions } from "../../../../types/combos";
 import { TABLE_COLUMN_CLASSNAME } from "../../../../helper/utils/Constants";
 import CustomColumn from "../../../../components/layout/CustomColumn";
 import { DateToDMY } from "../../../../helper/utils/Format";
@@ -170,6 +170,12 @@ const GroupsSocioTab: React.FC<{ socioId: number }> = ({ socioId }) => {
                     <TableColumn className={TABLE_COLUMN_CLASSNAME}>Horario</TableColumn>
                     <TableColumn className={TABLE_COLUMN_CLASSNAME}>Programa</TableColumn>
                     <TableColumn className={TABLE_COLUMN_CLASSNAME}>Fecha Baja</TableColumn>
+                    <TableColumn
+                        className={`${TABLE_COLUMN_CLASSNAME}`}
+                        onClick={() => { }}
+                    >
+                        <span className='text-sm'>Motivo</span>
+                    </TableColumn>
                 </TableHeader>
 
                 <TableBody>
@@ -179,6 +185,7 @@ const GroupsSocioTab: React.FC<{ socioId: number }> = ({ socioId }) => {
                             <TableCell>{""}</TableCell>
                             <TableCell>{""}</TableCell>
                             <TableCell>Cargando...</TableCell>
+                            <TableCell>{""}</TableCell>
                             <TableCell>{""}</TableCell>
                             <TableCell>{""}</TableCell>
                         </TableRow>
@@ -201,6 +208,7 @@ const GroupsSocioTab: React.FC<{ socioId: number }> = ({ socioId }) => {
                                         </Code>
                                     )}
                                 </TableCell>
+                                <TableCell className='rounded-r-xl'>{item.motivo_baja ? MotivoBajaPrograma.at(item.motivo_baja - 1)?.label : '-'}</TableCell>
                             </TableRow>
                         ))
                     )}

@@ -2,6 +2,7 @@ import { Entity, Paginated, UpdateParams } from "./commons";
 
 export interface SocioGrupoPivot extends Entity {
     fecha_baja: Date | null;
+    motivo_baja: number | null;
     socio_id: number;
     grupo_id: number;
     grupo: Grupo | null | undefined;
@@ -9,6 +10,7 @@ export interface SocioGrupoPivot extends Entity {
 
 export interface SocioGrupoPivotBody {
     fecha_baja: Date | undefined;
+    motivo_baja: number | undefined;
     socio_id: number;
     grupo_id: number;
 }

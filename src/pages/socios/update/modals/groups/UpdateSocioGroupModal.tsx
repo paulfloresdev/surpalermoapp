@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { SocioGrupoPivot, SocioGrupoPivotBody, UpdateSocioGrupoPivotParams } from "../../../../../types/socioGrupoPivots";
-import { addToast, Button, Code, Divider, Input, Modal, ModalBody, ModalContent, ModalHeader } from "@heroui/react";
+import { addToast, Button, Code, Divider, Input, Modal, ModalBody, ModalContent, ModalHeader, Select, SelectItem } from "@heroui/react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../../../store/configStore/store";
 import { ControlledModal, ItemState } from "../../../../../types/commons";
 import { DateToInput } from "../../../../../helper/utils/Format";
 import { updateSocioGrupoPivotRequest } from "../../../../../store/features/socioGrupoPivots/socioGrupoPivotsSlice";
+import { commonLeftLabelClassNames } from "../../../../fichas/AFormPage";
+import { MotivoBajaPrograma } from "../../../../../types/combos";
 
 interface UpdateSocioGroupProps extends ControlledModal {
     item: SocioGrupoPivot;
@@ -21,8 +23,10 @@ const UpdateSocioGroupModal: React.FC<UpdateSocioGroupProps> = ({ item, value, s
     const gruposSocio = useSelector((state: RootState) => state.socioGrupoPivots as ItemState<SocioGrupoPivot>);
 
     const [checkFechaBaja, setCheckFechaBaja] = useState<boolean>(false);
+    const [checkMotivoBaja, setCheckMotivoBaja] = useState<boolean>(false);
 
     const [fechaBaja, setFechaBaja] = useState<Date | undefined>(undefined);
+    const [motivoBaja, setMotivoBaja] = useState<number | undefined>(undefined);
 
     useEffect(() => {
         if (gruposSocio.updateSuccess !== null) {
@@ -52,10 +56,12 @@ const UpdateSocioGroupModal: React.FC<UpdateSocioGroupProps> = ({ item, value, s
 
     const handleUpdate = () => {
         setCheckFechaBaja(fechaBaja === undefined);
+        setCheckMotivoBaja(motivoBaja === undefined);
 
-        if (!checkFechaBaja) {
+        if (!checkFechaBaja || !motivoBaja) {
             var body: SocioGrupoPivotBody = {
                 fecha_baja: fechaBaja ?? new Date(),
+                motivo_baja: motivoBaja,
                 socio_id: item.socio_id,
                 grupo_id: item.grupo_id,
             }
@@ -104,6 +110,25 @@ const UpdateSocioGroupModal: React.FC<UpdateSocioGroupProps> = ({ item, value, s
                             }
                         }}
                     />
+                    <Select
+                        isInvalid={checkMotivoBaja}
+                        label="Motivo de baja"
+                        labelPlacement="outside"
+                        value={motivoBaja?.toString()}
+                        selectedKeys={motivoBaja?.toString()}
+                        onChange={(e) => {
+                            setMotivoBaja(Number(e.target.value));
+                            if (motivoBaja) {
+                                setCheckMotivoBaja(false);
+                            }
+                        }}
+                        className="font-medium pl-2"
+                        classNames={commonLeftLabelClassNames}
+                    >
+                        {MotivoBajaPrograma.map((option) => (
+                            <SelectItem key={option.key}>{option.label}</SelectItem>
+                        ))}
+                    </Select>
                     <Button
                         variant="solid"
                         className="text-white bg-emerald-500 hover:bg-emerald-400"
