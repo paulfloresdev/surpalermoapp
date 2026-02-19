@@ -2,7 +2,7 @@ import React from 'react';
 import { Button, Spinner, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from '@heroui/react';
 import { Socio } from '../../types/socios';
 import CustomColumn from './CustomColumn';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 interface SearchSociosTableProps {
     items: Socio[];
@@ -12,7 +12,6 @@ interface SearchSociosTableProps {
 }
 
 const SearchSociosTable: React.FC<SearchSociosTableProps> = ({ items, onOrderChange, currentOrder, loading }) => {
-    const navigate = useNavigate();
     const columnClassname = "bg-transparent border-b !rounded-none"
 
     const handleClick = (asc: number, desc: number) => {
@@ -103,7 +102,7 @@ const SearchSociosTable: React.FC<SearchSociosTableProps> = ({ items, onOrderCha
                         <TableRow
                             className='hover:bg-gray-100 cursor-pointer !rounded-lg text-gray-600 hover:text-black'
                             as={Link}
-                            href={`/sia/socios/${item.id}?tab=personal-data`}
+                            href={`/sur/app/#/sia/socios/${item.id}?tab=personal-data`}
                             target='_blank'
                         >
                             <TableCell className='rounded-l-xl'>

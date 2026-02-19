@@ -6,7 +6,7 @@ import { RootState } from "../../../../../store/configStore/store";
 import { ControlledModal, ItemState } from "../../../../../types/commons";
 import { DateToInput } from "../../../../../helper/utils/Format";
 import { updateSocioGrupoPivotRequest } from "../../../../../store/features/socioGrupoPivots/socioGrupoPivotsSlice";
-import { commonLeftLabelClassNames } from "../../../../fichas/AFormPage";
+import { commonLeftLabelClassNames } from "../../fichas/AFormPage";
 import { MotivoBajaPrograma } from "../../../../../types/combos";
 
 interface UpdateSocioGroupProps extends ControlledModal {

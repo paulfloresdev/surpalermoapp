@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
-import { RootState } from "../../store/configStore/store";
-import { ItemState, ListState } from "../../types/commons";
-import { BForm, BFormBody, UpdateBFormParams } from "../../types/bform";
-import { Socio } from "../../types/socios";
-import { showBFormRequest, storeBFormRequest, updateBFormRequest } from "../../store/features/forms/BForm/BFormSlice";
-import { showSocioRequest } from "../../store/features/socios/sociosSlice";
+import { RootState } from "../../../../store/configStore/store";
+import { ItemState, ListState } from "../../../../types/commons";
+import { BForm, BFormBody, UpdateBFormParams } from "../../../../types/bform";
+import { Socio } from "../../../../types/socios";
+import { showBFormRequest, storeBFormRequest, updateBFormRequest } from "../../../../store/features/forms/BForm/BFormSlice";
+import { showSocioRequest } from "../../../../store/features/socios/sociosSlice";
 import { addToast, Autocomplete, AutocompleteItem, Button, Divider, Input, Link, Select, SelectItem, Textarea } from "@heroui/react";
-import { socioForms, YNCombo } from "../../types/combos";
+import { socioForms, YNCombo } from "../../../../types/combos";
 import { commonLeftLabelClassNames } from "./AFormPage";
-import { BoolParse, YNParse } from "../../helper/utils/Format";
-import { Programa } from "../../types/programas";
-import { indexProgramasRequest } from "../../store/features/programas/programasSlice";
+import { BoolParse, YNParse } from "../../../../helper/utils/Format";
+import { Programa } from "../../../../types/programas";
+import { indexProgramasRequest } from "../../../../store/features/programas/programasSlice";
 
 const BFormPage: React.FC = () => {
     const { socioId, bFormId } = useParams();
@@ -53,7 +53,7 @@ const BFormPage: React.FC = () => {
         if (parsedSocioId !== undefined && parsedSocioId !== null) {
             dispatch(showSocioRequest(parsedSocioId.toString()));
         }
-        dispatch(indexProgramasRequest(undefined));
+        dispatch(indexProgramasRequest({ socio_id: undefined, inactivos: undefined }));
     }, [parsedBFormId, parsedSocioId]);
 
     useEffect(() => {
@@ -389,7 +389,7 @@ const BFormPage: React.FC = () => {
                     variant="solid"
                     isLoading={form.loading}
                     as={Link}
-                    href={`/sia/socios/${socioId}?tab=forms&form=1`}
+                    href={`/sur/app/#/sia/socios/${socioId}?tab=forms&form=1`}
                 >
                     Regresar
                 </Button>

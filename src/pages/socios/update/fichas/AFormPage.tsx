@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
-import { RootState } from "../../store/configStore/store";
-import { showAFormRequest, storeAFormRequest, updateAFormRequest } from "../../store/features/forms/AForm/AFormSlice";
-import { showSocioRequest } from "../../store/features/socios/sociosSlice";
-import { ItemState } from "../../types/commons";
-import { Socio } from "../../types/socios";
-import { AForm, AFormBody, AFormLabels, UpdateAFormParams } from "../../types/aform";
+import { RootState } from "../../../../store/configStore/store";
+import { showAFormRequest, storeAFormRequest, updateAFormRequest } from "../../../../store/features/forms/AForm/AFormSlice";
+import { showSocioRequest } from "../../../../store/features/socios/sociosSlice";
+import { ItemState } from "../../../../types/commons";
+import { Socio } from "../../../../types/socios";
+import { AForm, AFormBody, AFormLabels, UpdateAFormParams } from "../../../../types/aform";
 import { addToast, Button, Card, Divider, Input, InputProps, Link, Select, SelectItem, Textarea } from "@heroui/react";
-import { BoolParse, YNParse } from "../../helper/utils/Format";
-import { socioForms, YNCombo } from "../../types/combos";
+import { BoolParse, YNParse } from "../../../../helper/utils/Format";
+import { socioForms, YNCombo } from "../../../../types/combos";
 import EvaluationRow from "./fichas-components/EvaluationRow";
 import AFormPrograms from "./fichas-components/AFormPrograms";
 
@@ -760,7 +760,7 @@ const AFormPage: React.FC = () => {
                         variant="solid"
                         isLoading={form.loading}
                         as={Link}
-                        href={`/sia/socios/${socioId}?tab=forms&form=0`}
+                        href={`/sur/app/#/sia/socios/${socioId}?tab=forms&form=0`}
                     >
                         Regresar
                     </Button>

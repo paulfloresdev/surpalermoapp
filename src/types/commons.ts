@@ -81,3 +81,16 @@ export interface ControlledModal {
     setValue: React.Dispatch<React.SetStateAction<boolean>>;
     setShouldRefresh: React.Dispatch<React.SetStateAction<boolean>>;
 }
+
+export interface Excel {
+    excel?: boolean | undefined;
+}
+
+export interface ExcelSearchBody extends Paginated, Excel {
+    search: undefined | string;
+}
+
+export interface ExcelSearchParams {
+    page: undefined | number;
+    body: ExcelSearchBody;
+}

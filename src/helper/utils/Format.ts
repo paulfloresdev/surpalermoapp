@@ -1,5 +1,3 @@
-import { Key } from "react";
-
 //  Converts a Date object to a string formatted for HTML date input (YYYY-MM-DD)
 export function DateToInput(value: Date | string | null | undefined): string {
     if (!value) return "";
@@ -45,6 +43,36 @@ export const GetAge = (fecha: string | Date | null | undefined): string => {
     return String(age);
 };
 
+export const GetAgeAtMonthEnd = (
+    fecha: string | Date | null | undefined,
+    month: number | null | undefined, // 1-12
+    year: number | null | undefined
+): string => {
+    if (!fecha || !month || !year) return "-";
+
+    const born = new Date(fecha);
+    if (isNaN(born.getTime())) return "-";
+
+    // Último día del mes (month: 1–12)
+    const endOfMonth = new Date(year, month, 0);
+
+    let age = endOfMonth.getFullYear() - born.getFullYear();
+
+    const hasBirthdayPassed =
+        endOfMonth.getMonth() > born.getMonth() ||
+        (endOfMonth.getMonth() === born.getMonth() &&
+            endOfMonth.getDate() >= born.getDate());
+
+    if (!hasBirthdayPassed) age--;
+
+    // ✅ Si es negativo, devuelve "-"
+    if (age < 0) return "-";
+
+    return String(age);
+};
+
+
+
 export const DateToDMY = (value: string | Date | null | undefined): string => {
     if (!value) return "";
 
@@ -82,4 +110,39 @@ export const isSocioProgramaPivot = (obj: any): boolean => {
     );
 };
 
+export const getDayOfWeek = (input: string): string => {
+    const date = new Date(input);
+    const day = date.getDay();
+
+    const daysOfWeek = [
+        "Lunes",
+        "Martes",
+        "Miércoles",
+        "Jueves",
+        "Viernes",
+        "Sábado",
+        "Domingo",
+    ];
+
+    return daysOfWeek[day];
+}
+
+// utils/formatMoney.ts
+export function formatMoney(value: number | null | undefined): string {
+    if (value === null || value === undefined || isNaN(value)) {
+        return "$0.00";
+    }
+
+    return new Intl.NumberFormat("es-UY", {
+        style: "currency",
+        currency: "UYU",
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+    }).format(value);
+}
+
+export const getFileExtension = (path: string): string => {
+    if (!path) return "";
+    return path.split(".").pop()?.toLowerCase() ?? "";
+};
 

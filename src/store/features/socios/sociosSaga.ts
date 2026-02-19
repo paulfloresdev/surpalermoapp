@@ -1,8 +1,8 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
-import { clearSociosRequest, destroySocioFailure, destroySocioRequest, destroySocioSuccess, indexSociosFailure, indexSociosRequest, indexSociosSuccess, searchSociosFailure, searchSociosRequest, searchSociosSuccess, showSocioFailure, showSocioRequest, showSocioSuccess, storeSocioFailure, storeSocioRequest, storeSocioSuccess, updateSocioFailure, updateSocioRequest, updateSocioSuccess } from './sociosSlice';
-import { destroySocioAPI, indexSociosAPI, searchSociosAPI, showSocioAPI, storeSocioAPI, updateSocioAPI } from '../../../helper/api/backend';
+import { clearSociosRequest, deleteSocioImageFailure, deleteSocioImageRequest, deleteSocioImageSuccess, destroySocioFailure, destroySocioRequest, destroySocioSuccess, indexSociosFailure, indexSociosRequest, indexSociosSuccess, searchSociosFailure, searchSociosRequest, searchSociosSuccess, showSocioFailure, showSocioRequest, showSocioSuccess, storeSocioFailure, storeSocioRequest, storeSocioSuccess, updateSocioFailure, updateSocioRequest, updateSocioSuccess, uploadSocioImageFailure, uploadSocioImageRequest, uploadSocioImageSuccess } from './sociosSlice';
+import { deleteSocioImageAPI, destroySocioAPI, indexSociosAPI, searchSociosAPI, showSocioAPI, storeSocioAPI, updateSocioAPI, uploadSocioImageAPI } from '../../../helper/api/backend';
 
-function* indexSociosSaga(action: any): Generator<any, any, any> {
+function* indexSociosSaga(_action: any): Generator<any, any, any> {
     try {
         yield put(clearSociosRequest());
         const res = yield call(indexSociosAPI);
@@ -62,6 +62,32 @@ export function* searchSociosSaga(action: any): Generator<any, any, any> {
     }
 }
 
+function* uploadSocioImageSaga(action: any): Generator<any, any, any> {
+    try {
+        // opcional: no limpies todo si te afecta otros flags, pero ok si así lo manejas
+        yield put(clearSociosRequest());
+
+        const { id, file } = action.payload;
+        const res = yield call(uploadSocioImageAPI, id, file);
+
+        // asumiendo tu API responde { data, message }
+        yield put(uploadSocioImageSuccess({ data: res.data, message: res.message }));
+    } catch (error: any) {
+        yield put(uploadSocioImageFailure(error?.response?.data?.message || "Error al subir imagen"));
+    }
+}
+
+function* deleteSocioImageSaga(action: any): Generator<any, any, any> {
+    try {
+        yield put(clearSociosRequest());
+
+        const res = yield call(deleteSocioImageAPI, action.payload);
+        yield put(deleteSocioImageSuccess({ data: res.data, message: res.message }));
+    } catch (error: any) {
+        yield put(deleteSocioImageFailure(error?.response?.data?.message || "Error al borrar imagen"));
+    }
+}
+
 export function* watchSociosSaga() {
     yield takeLatest(indexSociosRequest.type, indexSociosSaga);
     yield takeLatest(storeSocioRequest.type, storeSocioSaga);
@@ -69,4 +95,6 @@ export function* watchSociosSaga() {
     yield takeLatest(updateSocioRequest.type, updateSocioSaga);
     yield takeLatest(destroySocioRequest.type, destroySocioSaga);
     yield takeLatest(searchSociosRequest.type, searchSociosSaga);
+    yield takeLatest(uploadSocioImageRequest.type, uploadSocioImageSaga);
+    yield takeLatest(deleteSocioImageRequest.type, deleteSocioImageSaga);
 }

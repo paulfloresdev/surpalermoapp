@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { CrudState, PaginatedParams } from "../../../types/commons";
-import { Emergencia, EmergenciaBody, UpdateEmergenciaParams } from "../../../types/emergencias";
+import { Emergencia, EmergenciaBody, PaginatedEmergenciasParams, UpdateEmergenciaParams } from "../../../types/emergencias";
 import { PaginatedItems } from "../../../types/responses";
 
 const initialState: CrudState<Emergencia> = {
@@ -45,7 +45,7 @@ const emergenciasSlice = createSlice({
         },
 
         //  PAGINATED
-        paginatedEmergenciasRequest: (state, _action: PayloadAction<PaginatedParams>) => {
+        paginatedEmergenciasRequest: (state, _action: PayloadAction<PaginatedEmergenciasParams>) => {
             state.loading = true;
             state.error = null;
         },

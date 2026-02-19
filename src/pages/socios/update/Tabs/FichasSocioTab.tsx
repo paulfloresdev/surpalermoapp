@@ -26,7 +26,7 @@ export interface SocioTabProps {
 const FichasSocioTab: React.FC<SocioTabProps> = ({ socioId }) => {
     const dispatch = useDispatch();
 
-    const [searchParams, setSearchParams] = useSearchParams();
+    const [searchParams] = useSearchParams();
     const urlForm = searchParams.get("form") ?? '0';
 
     const [selectedForm, setSelectedForm] = useState<number>(parseInt(urlForm));
@@ -42,7 +42,8 @@ const FichasSocioTab: React.FC<SocioTabProps> = ({ socioId }) => {
 
     useEffect(() => {
         makeQuery();
-    }, [selectedForm])
+        console.log('useEffect');
+    }, [selectedForm, page])
 
     useEffect(() => {
         switch (selectedForm) {
@@ -69,21 +70,27 @@ const FichasSocioTab: React.FC<SocioTabProps> = ({ socioId }) => {
     const makeQuery = () => {
         switch (selectedForm) {
             case 0:
-                dispatch(indexAFormsRequest(socioId.toString()));
+                console.log('case 0');
+                dispatch(indexAFormsRequest({ socioId: socioId.toString(), page: page?.toString() ?? '1' }));
                 break;
             case 1:
-                dispatch(indexBFormsRequest(socioId.toString()));
+                console.log('case 1');
+                dispatch(indexBFormsRequest({ socioId: socioId.toString(), page: page?.toString() ?? '1' }));
                 break;
             case 2:
-                dispatch(indexCFormsRequest(socioId.toString()));
+                console.log('case 2');
+                dispatch(indexCFormsRequest({ socioId: socioId.toString(), page: page?.toString() ?? '1' }));
                 break;
             case 3:
-                dispatch(indexDFormsRequest(socioId.toString()));
+                console.log('case 3');
+                dispatch(indexDFormsRequest({ socioId: socioId.toString(), page: page?.toString() ?? '1' }));
                 break;
             case 4:
-                dispatch(indexEFormsRequest(socioId.toString()));
+                console.log('case 4');
+                dispatch(indexEFormsRequest({ socioId: socioId.toString(), page: page?.toString() ?? '1' }));
                 break;
             default:
+                console.log('default');
                 break;
         }
     }
@@ -134,7 +141,7 @@ const FichasSocioTab: React.FC<SocioTabProps> = ({ socioId }) => {
                                                 variant="solid"
                                                 size="sm"
                                                 as={Link}
-                                                href={`/sia/fichas/${socioForms.at(selectedForm)?.code}/${socioId}`}
+                                                href={`/sur/app/#/sia/fichas/${socioForms.at(selectedForm)?.code}/${socioId}`}
                                             >
                                                 Agregar
                                             </Button>
@@ -177,18 +184,36 @@ const FichasSocioTab: React.FC<SocioTabProps> = ({ socioId }) => {
                                         </TableHeader>
                                         <TableBody>
                                             {
-                                                (form?.data?.data ?? []).map((item) => (
+
+                                                form?.loading ? <>
                                                     <TableRow
-                                                        key={item.id}
+                                                        key={1}
                                                         className='hover:bg-gray-100 cursor-pointer !rounded-lg text-gray-600 hover:text-black'
                                                         as={Link}
-                                                        href={`/sia/fichas/${socioForms.at(selectedForm)?.code}/${socioId}/${item.id}`}
                                                     >
-                                                        <TableCell>{socioForms.at(selectedForm)?.code}-{item.id}</TableCell>
-                                                        <TableCell>{DateToDMY(item.created_at)}</TableCell>
-                                                        <TableCell>{DateToDMY(item.updated_at)}</TableCell>
+                                                        <TableCell>{"Cargando..."}</TableCell>
+                                                        <TableCell>{""}</TableCell>
+                                                        <TableCell>{""}</TableCell>
                                                     </TableRow>
-                                                ))
+                                                </>
+                                                    :
+                                                    <>
+                                                        {
+                                                            (form?.data?.data ?? []).map((item) => (
+                                                                <TableRow
+                                                                    key={item.id}
+                                                                    className='hover:bg-gray-100 cursor-pointer !rounded-lg text-gray-600 hover:text-black'
+                                                                    as={Link}
+                                                                    href={`/sur/app/#/sia/fichas/${socioForms.at(selectedForm)?.code}/${socioId}/${item.id}`}
+                                                                >
+                                                                    <TableCell>{socioForms.at(selectedForm)?.code}-{item.id}</TableCell>
+                                                                    <TableCell>{DateToDMY(item.created_at)}</TableCell>
+                                                                    <TableCell>{DateToDMY(item.updated_at)}</TableCell>
+                                                                </TableRow>
+                                                            ))
+                                                        }
+                                                    </>
+
                                             }
 
                                         </TableBody>

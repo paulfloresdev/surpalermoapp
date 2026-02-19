@@ -3,13 +3,16 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store/configStore/store";
 import { PaginatedState } from "../../types/commons";
 import { Mutualista, SearchMutualistasParams } from "../../types/mutualistas";
-import { Button, Input, Pagination, Select, SelectItem, Spinner, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from "@heroui/react";
+import { addToast, Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Input, Pagination, Select, SelectItem, Spinner, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from "@heroui/react";
 import DynamicFaIcon from "../../components/DynamicFaIcon";
 import { perPageOptions } from "../../types/combos";
 import { searchMutualistasRequest } from "../../store/features/mutualistas/mutualistasSlice";
 import StoreMutualistaModal from "./modals/StoreMutualistaModal";
 import UpdateMutualistaModal from "./modals/UpdateMutualistaModal";
 import DestroyMutualistaModal from "./modals/DestroyMutualistaModal";
+import LoadingReport from "../../components/layout/LoadingReport";
+import { getFilenameFromDisposition } from "../socios/update/tabs/SocioFilesTab";
+import { searchMutualistasAPI } from "../../helper/api/backend";
 
 const MutualistasPage: React.FC = () => {
     const dispatch = useDispatch();
@@ -26,6 +29,7 @@ const MutualistasPage: React.FC = () => {
     const [openUpdate, setOpenUpdate] = useState<boolean>(false);
     const [openDestroy, setOpenDestroy] = useState<boolean>(false);
     const [shouldRefresh, setShouldRefresh] = useState(true);
+    const [downloading, setDownloading] = useState(false);
 
     const [updateMutualista, setUpdateMutualista] = useState<undefined | Mutualista>(undefined);
     const [destroyMutualista, setDestroyMutualista] = useState<undefined | Mutualista>(undefined);
@@ -50,13 +54,14 @@ const MutualistasPage: React.FC = () => {
         }
     }, [destroyMutualista])
 
-    const buildParams = (): SearchMutualistasParams => {
+    const buildParams = (excel = false): SearchMutualistasParams => {
         const params: SearchMutualistasParams = {
             page,
             body: {
                 order: undefined,
                 per_page: perPage,
                 search: search,
+                excel: excel
             }
         }
 
@@ -68,8 +73,84 @@ const MutualistasPage: React.FC = () => {
         dispatch(searchMutualistasRequest(params));
     }
 
+    const downloadExcel = async () => {
+        setDownloading(true);
+
+        try {
+            const params = buildParams(true);
+            const res = await searchMutualistasAPI(params);
+
+            const contentType = String(
+                res.headers?.["content-type"] ?? res.headers?.["Content-Type"] ?? ""
+            );
+
+            // Si NO es xlsx, seguramente es JSON/HTML (error). Léelo y muestra mensaje.
+            if (!contentType.includes("application/vnd.openxmlformats-officedocument")) {
+                const data = res.data;
+
+                const text =
+                    data instanceof Blob
+                        ? await data.text()
+                        : typeof data === "string"
+                            ? data
+                            : JSON.stringify(data);
+
+                let message = text;
+
+                try {
+                    const json = JSON.parse(text);
+                    message = json?.message ?? message;
+                } catch { }
+
+                throw new Error(message);
+            }
+
+            // Normaliza a Blob real
+            const data = res.data;
+            const blob =
+                data instanceof Blob
+                    ? data
+                    : new Blob([data], {
+                        type:
+                            contentType ||
+                            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                    });
+
+            const cd =
+                (res.headers?.["content-disposition"] as string | undefined) ??
+                (res.headers?.["Content-Disposition"] as string | undefined);
+
+            const filenameFromHeader = getFilenameFromDisposition(cd);
+            const filename = filenameFromHeader ?? "mutualistas.xlsx";
+
+            const blobUrl = URL.createObjectURL(blob);
+
+            const a = document.createElement("a");
+            a.href = blobUrl;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+
+            URL.revokeObjectURL(blobUrl);
+        } catch (error: any) {
+            addToast({
+                title: "Error",
+                description: error?.message || "No se pudo descargar",
+                color: "danger",
+            });
+        } finally {
+            setDownloading(false);
+        }
+    };
+
+
+    if (downloading) {
+        return <LoadingReport />;
+    }
+
     return (
-        <div className="w-7/12 mx-auto h-full flex flex-col gap-2">
+        <div className="w-3/4 mx-auto h-full flex flex-col gap-2">
             <span className="font-semibold text-lg">Mutualistas</span>
             <div className="flex flex-row items-center justify-between">
                 <div className="flex flex-row gap-x-4 items-center">
@@ -101,7 +182,7 @@ const MutualistasPage: React.FC = () => {
                     />
                     <Button
                         disableRipple
-                        className="bg-cyan-900 text-white"
+                        className="bg-emerald-500 text-white"
                         endContent={<DynamicFaIcon name="FaPlus" size={12} className="text-white" />}
                         variant="solid"
                         size="sm"
@@ -109,6 +190,29 @@ const MutualistasPage: React.FC = () => {
                     >
                         Agregar
                     </Button>
+                    {/* Dropdown export */}
+                    <Dropdown size="sm">
+                        <DropdownTrigger>
+                            <Button
+                                disableRipple
+                                className="min-w-fit bg-cyan-900 text-white"
+                                endContent={<DynamicFaIcon name="FaAngleDown" size={16} className="!text-white" />}
+                                variant="solid"
+                                size="sm"
+                            >
+                                Exportar
+                            </Button>
+                        </DropdownTrigger>
+                        <DropdownMenu>
+                            <DropdownItem
+                                key={1}
+                                endContent={<DynamicFaIcon name="FaFileExcel" className="!text-emerald-500" />}
+                                onPress={downloadExcel}
+                            >
+                                Exportar a Excel
+                            </DropdownItem>
+                        </DropdownMenu>
+                    </Dropdown>
                 </div>
                 <div className="">
                     {
@@ -191,7 +295,7 @@ const MutualistasPage: React.FC = () => {
                                 <TableCell className='rounded-l-xl'>{item.nombre}</TableCell>
                                 <TableCell>{item.telefono}</TableCell>
                                 <TableCell>{item.direccion}</TableCell>
-                                <TableCell className='rounded-r-xl'>
+                                <TableCell className='rounded-r-xl p-2'>
                                     <Button
                                         variant="flat"
                                         color="danger"

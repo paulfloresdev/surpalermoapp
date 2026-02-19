@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
-import { RootState } from "../../store/configStore/store";
-import { ItemState, ListState } from "../../types/commons";
-import { CForm, CFormBody, UpdateCFormParams } from "../../types/cform";
-import { Socio } from "../../types/socios";
-import { showCFormRequest, storeCFormRequest, updateCFormRequest } from "../../store/features/forms/CForm/CFormSlice";
-import { showSocioRequest } from "../../store/features/socios/sociosSlice";
-import { CFormEvaluacion, CFormMotivoEgreso, socioForms, YNCombo } from "../../types/combos";
-import { Programa } from "../../types/programas";
-import { indexProgramasRequest } from "../../store/features/programas/programasSlice";
-import { addToast, Autocomplete, AutocompleteItem, Button, Divider, Input, Link, Select, Selection, SelectItem, SharedSelection, Textarea } from "@heroui/react";
+import { RootState } from "../../../../store/configStore/store";
+import { ItemState, ListState } from "../../../../types/commons";
+import { CForm, CFormBody, UpdateCFormParams } from "../../../../types/cform";
+import { Socio } from "../../../../types/socios";
+import { showCFormRequest, storeCFormRequest, updateCFormRequest } from "../../../../store/features/forms/CForm/CFormSlice";
+import { showSocioRequest } from "../../../../store/features/socios/sociosSlice";
+import { CFormEvaluacion, CFormMotivoEgreso, socioForms, YNCombo } from "../../../../types/combos";
+import { Programa } from "../../../../types/programas";
+import { indexProgramasRequest } from "../../../../store/features/programas/programasSlice";
+import { addToast, Autocomplete, AutocompleteItem, Button, Divider, Input, Link, Select, SelectItem, SharedSelection, Textarea } from "@heroui/react";
 import { commonLeftLabelClassNames } from "./AFormPage";
-import { BoolParse, YNParse } from "../../helper/utils/Format";
+import { BoolParse, YNParse } from "../../../../helper/utils/Format";
 
 const CFormPage: React.FC = () => {
     const { socioId, cFormId } = useParams();
@@ -65,7 +65,7 @@ const CFormPage: React.FC = () => {
         if (parsedSocioId !== undefined && parsedSocioId !== null) {
             dispatch(showSocioRequest(parsedSocioId.toString()));
         }
-        dispatch(indexProgramasRequest(undefined));
+        dispatch(indexProgramasRequest({ socio_id: undefined, inactivos: undefined }));
     }, [parsedCFormId, parsedSocioId]);
 
     useEffect(() => {
@@ -550,7 +550,7 @@ const CFormPage: React.FC = () => {
                     variant="solid"
                     isLoading={form.loading}
                     as={Link}
-                    href={`/sia/socios/${socioId}?tab=forms&form=2`}
+                    href={`/sur/app/#/sia/socios/${socioId}?tab=forms&form=2`}
                 >
                     Regresar
                 </Button>

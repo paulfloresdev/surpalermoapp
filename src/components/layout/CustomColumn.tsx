@@ -1,4 +1,3 @@
-import { TableColumn } from "@heroui/react";
 import React from "react";
 import DynamicFaIcon from "../DynamicFaIcon";
 

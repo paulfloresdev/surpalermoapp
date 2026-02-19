@@ -2,6 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { BForm, BFormBody, UpdateBFormParams } from "../../../../types/bform";
 import { CrudState, Response } from "../../../../types/commons";
 import { PaginatedItems } from "../../../../types/responses";
+import { FormParams } from "../../../../types/aform";
 
 const initialState: CrudState<BForm> = {
     data: null,
@@ -29,7 +30,7 @@ const bFormSlice = createSlice({
         },
 
         //  INDEX
-        indexBFormsRequest: (state, _action: PayloadAction<string>) => {
+        indexBFormsRequest: (state, _action: PayloadAction<FormParams>) => {
             state.loading = true;
             state.error = null;
         },

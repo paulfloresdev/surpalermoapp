@@ -39,7 +39,7 @@ const Login: React.FC = () => {
         <form onSubmit={handleSubmit} className='h-dscreen w-screen flex flex-row justify-center items-center p-8 bg-gray-50'>
             <div className="w-full lg:w-1/3 h-full flex flex-col items-start justify-start gap-y-8 bg-white p-8 rounded-3xl shadow-xl shadow-gray-200">
                 <div className='w-full flex flex-col justify-center items-center gap-y-4'>
-                    <Image src='/assets/favicon.png' className='w-32' />
+                    <Image src='/sur/app/#/assets/favicon.png' className='w-32' />
                     <span className='text-lg font-semibold text-center'>Centro Psicosocial Sur Palermo <br></br> SIA</span>
                 </div>
                 <Divider className='mb-4' />

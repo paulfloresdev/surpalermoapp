@@ -10,6 +10,16 @@ import { watchProgramasSaga } from '../features/programas/programasSaga';
 import { watchSocioProgramaPivotsSaga } from '../features/socioProgramaPivots/socioProgramaPivotsSaga';
 import { watchGruposSaga } from '../features/grupos/gruposSaga';
 import { watchSocioGrupoPivotsSaga } from '../features/socioGrupoPivots/socioGrupoPivotsSaga';
+import { watchTicketsSaga } from '../features/tickets/ticketsSaga'
+import { watchSocioFileTypesSaga } from '../features/socioFileTypes/socioFileTypesSaga';
+import { watchSocioFilesSaga } from '../features/socioFiles/socioFilesSaga';
+import { watchFuncionariosSaga } from '../features/funcionarios/funcionariosSaga';
+import { watchDocentesSaga } from '../features/docentes/docentesSaga';
+import { watchMedicosSaga } from '../features/medicos/medicosSaga';
+import { watchGroupFormsSaga } from '../features/groupForms/groupFormsSaga';
+import { watchDocenteGrupoPivotsSaga } from '../features/docenteGrupoPivots/docenteGrupoPivotsSaga';
+import { watchCoordinadoresSaga } from '../features/coordinadores/coordinadoresSaga';
+import { watchDocenteFormsSaga } from '../features/docenteForms/docenteFormsSaga';
 
 //  Forms
 import { watchAFormSaga } from '../features/forms/AForm/AFormSaga';
@@ -20,6 +30,7 @@ import { watchEFormSaga } from '../features/forms/EForm/EFormSaga';
 
 export default function* rootSaga() {
     yield all([
+        //  API
         fork(watchAuthSaga),
         fork(watchSociosSaga),
         fork(watchDepartamentosSaga),
@@ -30,6 +41,18 @@ export default function* rootSaga() {
         fork(watchSocioProgramaPivotsSaga),
         fork(watchGruposSaga),
         fork(watchSocioGrupoPivotsSaga),
+        fork(watchTicketsSaga),
+        fork(watchSocioFileTypesSaga),
+        fork(watchSocioFilesSaga),
+        fork(watchFuncionariosSaga),
+        fork(watchDocentesSaga),
+        fork(watchMedicosSaga),
+        fork(watchGroupFormsSaga),
+        fork(watchDocenteGrupoPivotsSaga),
+        fork(watchCoordinadoresSaga),
+        fork(watchDocenteFormsSaga),
+
+        // FORMS
         fork(watchAFormSaga),
         fork(watchBFormSaga),
         fork(watchCFormSaga),

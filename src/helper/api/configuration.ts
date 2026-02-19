@@ -2,10 +2,10 @@ import axios, { AxiosRequestConfig, AxiosResponse, InternalAxiosRequestConfig } 
 import qs from 'qs';
 //import createAuthRefreshInterceptor from 'axios-auth-refresh'
 
-const autoApi = import.meta.env.VITE_SITE_BASE_API_URL_BACKEND;
+const apiUrl = import.meta.env.VITE_SITE_BASE_API_URL_BACKEND;
 
 const axiosInstance = axios.create({
-    baseURL: autoApi,
+    baseURL: apiUrl,
     headers: {
         'Accept': 'application/json',
         'Access-Control-Allow-Origin': '*'
@@ -136,3 +136,16 @@ class APIClient {
 }
 
 export const api = new APIClient();
+
+export const rawAxios = axios.create({
+    baseURL: apiUrl,
+    withCredentials: false,
+});
+
+
+rawAxios.interceptors.request.use((config) => {
+    const token = localStorage.getItem("token");
+    if (token) config.headers.Authorization = `Bearer ${token}`;
+    config.headers["Accept-Language"] = "es-MX";
+    return config;
+});

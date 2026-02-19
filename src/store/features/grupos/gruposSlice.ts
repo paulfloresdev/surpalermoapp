@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { CrudState, Response } from "../../../types/commons";
-import { Grupo, GrupoBody, UpdateGrupoParams } from "../../../types/grupos";
+import { Grupo, GrupoBody, PaginatedGruposParams, UpdateGrupoParams } from "../../../types/grupos";
+import { PaginatedItems } from "../../../types/responses";
 
 const initialState: CrudState<Grupo> = {
     data: null,
@@ -39,6 +40,22 @@ const gruposSlice = createSlice({
             state.indexSuccess = true;
         },
         indexGruposFailure: (state, action: PayloadAction<string>) => {
+            state.loading = false;
+            state.error = action.payload;
+            state.indexSuccess = false;
+        },
+
+        //  PAGINATED
+        paginatedGruposRequest: (state, _action: PayloadAction<PaginatedGruposParams>) => {
+            state.loading = true;
+            state.error = null;
+        },
+        paginatedGruposSuccess: (state, action: PayloadAction<PaginatedItems<Grupo>>) => {
+            state.loading = false;
+            state.data = action.payload;
+            state.indexSuccess = true;
+        },
+        paginatedGruposFailure: (state, action: PayloadAction<string>) => {
             state.loading = false;
             state.error = action.payload;
             state.indexSuccess = false;
@@ -136,6 +153,9 @@ export const {
     indexGruposRequest,
     indexGruposSuccess,
     indexGruposFailure,
+    paginatedGruposRequest,
+    paginatedGruposSuccess,
+    paginatedGruposFailure,
     storeGrupoRequest,
     storeGrupoSuccess,
     storeGrupoFailure,

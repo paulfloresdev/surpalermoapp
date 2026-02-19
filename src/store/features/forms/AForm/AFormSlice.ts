@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { AForm, AFormBody, UpdateAFormParams } from "../../../../types/aform";
+import { AForm, AFormBody, FormParams, UpdateAFormParams } from "../../../../types/aform";
 import { CrudState, Response } from "../../../../types/commons";
 import { PaginatedItems } from "../../../../types/responses";
 
@@ -29,7 +29,7 @@ const aFormSlice = createSlice({
         },
 
         //  INDEX
-        indexAFormsRequest: (state, _action: PayloadAction<string>) => {
+        indexAFormsRequest: (state, _action: PayloadAction<FormParams>) => {
             state.loading = true;
             state.error = null;
         },

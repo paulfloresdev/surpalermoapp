@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { CrudState, PaginatedParams } from "../../../types/commons";
-import { Programa, ProgramaBody, UpdateProgramaParams } from "../../../types/programas";
+import { IndexProgramaParams, PaginatedProgramasParams, Programa, ProgramaBody, UpdateProgramaParams } from "../../../types/programas";
 import { PaginatedItems } from "../../../types/responses";
 
 const initialState: CrudState<Programa> = {
@@ -29,7 +29,7 @@ const programasSlice = createSlice({
         },
 
         //  INDEX
-        indexProgramasRequest: (state, _action: PayloadAction<string | undefined>) => {
+        indexProgramasRequest: (state, _action: PayloadAction<IndexProgramaParams>) => {
             state.loading = true;
             state.error = null;
         },
@@ -45,7 +45,7 @@ const programasSlice = createSlice({
         },
 
         //  PAGINATED
-        paginatedProgramasRequest: (state, _action: PayloadAction<PaginatedParams>) => {
+        paginatedProgramasRequest: (state, _action: PayloadAction<PaginatedProgramasParams>) => {
             state.loading = true;
             state.error = null;
         },

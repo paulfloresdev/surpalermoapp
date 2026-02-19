@@ -76,7 +76,8 @@ const InscriptionSocioGroupModal: React.FC<IscriptionSocioGroupModalProps> = ({ 
             var body: SocioGrupoPivotBody = {
                 socio_id: socioId,
                 grupo_id: grupoId ?? 0,
-                fecha_baja: undefined
+                fecha_baja: undefined,
+                motivo_baja: undefined
 
             }
 

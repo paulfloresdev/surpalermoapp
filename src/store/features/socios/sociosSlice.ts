@@ -129,6 +129,43 @@ const sociosSlice = createSlice({
             state.error = action.payload;
             state.indexSuccess = false;
         },
+
+        //  UPLOAD-IMAGE
+        // UPLOAD IMAGE
+        uploadSocioImageRequest: (state, _action: PayloadAction<{ id: string; file: File }>) => {
+            state.loading = true;
+            state.error = null;
+            state.updateSuccess = null;
+        },
+        uploadSocioImageSuccess: (state, action: PayloadAction<Response<Socio>>) => {
+            state.loading = false;
+            state.data = action.payload.data; // aquí esperas socio actualizado o al menos image_path
+            state.message = action.payload.message;
+            state.updateSuccess = true;
+        },
+        uploadSocioImageFailure: (state, action: PayloadAction<string>) => {
+            state.loading = false;
+            state.error = action.payload;
+            state.updateSuccess = false;
+        },
+
+        // DELETE IMAGE
+        deleteSocioImageRequest: (state, _action: PayloadAction<string>) => {
+            state.loading = true;
+            state.error = null;
+            state.destroySuccess = null;
+        },
+        deleteSocioImageSuccess: (state, action: PayloadAction<Response<Socio>>) => {
+            state.loading = false;
+            state.data = action.payload.data;
+            state.message = action.payload.message;
+            state.destroySuccess = true;
+        },
+        deleteSocioImageFailure: (state, action: PayloadAction<string>) => {
+            state.loading = false;
+            state.error = action.payload;
+            state.destroySuccess = false;
+        },
     }
 });
 
@@ -152,6 +189,12 @@ export const {
     searchSociosRequest,
     searchSociosSuccess,
     searchSociosFailure,
+    uploadSocioImageRequest,
+    uploadSocioImageSuccess,
+    uploadSocioImageFailure,
+    deleteSocioImageRequest,
+    deleteSocioImageSuccess,
+    deleteSocioImageFailure,
 } = sociosSlice.actions;
 
 export default sociosSlice.reducer;

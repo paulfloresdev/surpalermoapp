@@ -16,6 +16,7 @@ export interface UpdateMutualistaParams extends UpdateParams<MutualistaBody> { }
 
 export interface SearchMutualistasBody extends Paginated {
     search: undefined | string;
+    excel: undefined | boolean;
 }
 
 export interface SearchMutualistasParams {

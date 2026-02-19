@@ -31,7 +31,7 @@ const InscriptionSocioProgramModal: React.FC<InscriptionSocioProgramProps> = ({ 
     const [bajaActividad, setBajaActividad] = useState<boolean>(false);
 
     useEffect(() => {
-        dispatch(indexProgramasRequest(socioId.toString()));
+        dispatch(indexProgramasRequest({ socio_id: socioId.toString(), inactivos: undefined }));
     }, []);
 
     useEffect(() => {

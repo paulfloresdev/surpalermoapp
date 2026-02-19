@@ -4,7 +4,7 @@ import { RootState } from "../../../../store/configStore/store";
 import { PaginatedState } from "../../../../types/commons";
 import { SearchSocioProgramaPivotsParams, SocioProgramaPivot } from "../../../../types/socioProgramaPivots";
 import { searchSocioProgramaPivotsRequest } from "../../../../store/features/socioProgramaPivots/socioProgramaPivotsSlice";
-import { Button, Card, Code, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Input, Pagination, Select, SelectItem, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from "@heroui/react";
+import { addToast, Button, Card, Code, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Input, Pagination, Select, SelectItem, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from "@heroui/react";
 import DynamicFaIcon from "../../../../components/DynamicFaIcon";
 import { MotivoBajaPrograma, perPageOptions } from "../../../../types/combos";
 import CustomColumn from "../../../../components/layout/CustomColumn";
@@ -12,6 +12,9 @@ import { DateToDMY } from "../../../../helper/utils/Format";
 import InscriptionSocioProgramModal from "../modals/programs/InscriptionSocioProgramModal";
 import UpdateSocioProgramModal from "../modals/programs/UpdateProgramModal";
 import { TABLE_COLUMN_CLASSNAME } from "../../../../helper/utils/Constants";
+import { searchSocioProgramaPivotsAPI } from "../../../../helper/api/backend";
+import { getFilenameFromDisposition } from "./SocioFilesTab";
+import LoadingReport from "../../../../components/layout/LoadingReport";
 
 export interface SocioTabProps {
     socioId: number;
@@ -30,13 +33,17 @@ const ProgramsSocioTab: React.FC<SocioTabProps> = ({ socioId }) => {
     const [openInscription, setOpenInscription] = useState<boolean>(false);
     const [openUpdate, setOpenUpdate] = useState<boolean>(false);
     const [shouldRefresh, setShouldRefresh] = useState(true);
+    const [downloading, setDownloading] = useState(false);
 
     const [selectedProgram, setSelectedProgram] = useState<undefined | SocioProgramaPivot>(undefined);
 
 
     useEffect(() => {
         if (!openInscription && !openUpdate) {
-            makeSearch();
+            if (shouldRefresh) {
+                makeSearch();
+            }
+            setShouldRefresh(true);
         }
     }, [page, order, itemsPerPage, openInscription, openUpdate]);
 
@@ -48,14 +55,15 @@ const ProgramsSocioTab: React.FC<SocioTabProps> = ({ socioId }) => {
         }
     }, [selectedProgram]);
 
-    const buildParams = (): SearchSocioProgramaPivotsParams => {
+    const buildParams = (excel = false): SearchSocioProgramaPivotsParams => {
         var params: SearchSocioProgramaPivotsParams = {
             page: page,
             body: {
                 socio_id: socioId,
                 order: order,
                 search: search,
-                per_page: itemsPerPage
+                per_page: itemsPerPage,
+                excel: excel
             }
         }
 
@@ -71,7 +79,81 @@ const ProgramsSocioTab: React.FC<SocioTabProps> = ({ socioId }) => {
         setOrder(order == asc ? desc : asc);
     }
 
+    const downloadExcel = async () => {
+        setDownloading(true);
 
+        try {
+            const params = buildParams(true);
+            const res = await searchSocioProgramaPivotsAPI(params);
+
+            const contentType = String(
+                res.headers?.["content-type"] ?? res.headers?.["Content-Type"] ?? ""
+            );
+
+            // Si NO es xlsx, seguramente es JSON/HTML (error). Léelo y muestra mensaje.
+            if (!contentType.includes("application/vnd.openxmlformats-officedocument")) {
+                const data = res.data;
+
+                const text =
+                    data instanceof Blob
+                        ? await data.text()
+                        : typeof data === "string"
+                            ? data
+                            : JSON.stringify(data);
+
+                let message = text;
+
+                try {
+                    const json = JSON.parse(text);
+                    message = json?.message ?? message;
+                } catch { }
+
+                throw new Error(message);
+            }
+
+            // Normaliza a Blob real
+            const data = res.data;
+            const blob =
+                data instanceof Blob
+                    ? data
+                    : new Blob([data], {
+                        type:
+                            contentType ||
+                            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                    });
+
+            const cd =
+                (res.headers?.["content-disposition"] as string | undefined) ??
+                (res.headers?.["Content-Disposition"] as string | undefined);
+
+            const filenameFromHeader = getFilenameFromDisposition(cd);
+            const filename = filenameFromHeader ?? "programas_socio.xlsx";
+
+            const blobUrl = URL.createObjectURL(blob);
+
+            const a = document.createElement("a");
+            a.href = blobUrl;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+
+            URL.revokeObjectURL(blobUrl);
+        } catch (error: any) {
+            addToast({
+                title: "Error",
+                description: error?.message || "No se pudo descargar",
+                color: "danger",
+            });
+        } finally {
+            setDownloading(false);
+        }
+    };
+
+
+    if (downloading) {
+        return <LoadingReport />;
+    }
 
     return (
         <Card className="w-full flex flex-col gap-16 p-10">
@@ -106,7 +188,7 @@ const ProgramsSocioTab: React.FC<SocioTabProps> = ({ socioId }) => {
                             <Button
                                 disableRipple
                                 className="bg-cyan-900 text-white"
-                                endContent={<DynamicFaIcon name="FaAngleDown" size={16} className="text-gray-100" />}
+                                endContent={<DynamicFaIcon name="FaAngleDown" size={16} className="!text-white" />}
                                 variant="solid"
                                 size="sm"
                             >
@@ -117,14 +199,9 @@ const ProgramsSocioTab: React.FC<SocioTabProps> = ({ socioId }) => {
                             <DropdownItem
                                 key={1}
                                 endContent={<DynamicFaIcon name="FaFileExcel" className="!text-emerald-500" />}
+                                onPress={downloadExcel}
                             >
                                 Exportar a Excel
-                            </DropdownItem>
-                            <DropdownItem
-                                key={2}
-                                endContent={<DynamicFaIcon name="FaFilePdf" className="!text-danger" />}
-                            >
-                                Exportar a PDF
                             </DropdownItem>
                         </DropdownMenu>
                     </Dropdown>

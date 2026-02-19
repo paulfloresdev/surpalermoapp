@@ -32,12 +32,12 @@ const updateSocioFormSlice = createSlice({
                 state.data = {} as Partial<SocioBody>;
             }
 
-            const { key, value } = action.payload;
-            state.data[key as keyof typeof state.data] = value as never;
+            const py = action.payload;
+            state.data[py?.key as keyof typeof state.data] = py?.value as never;
         },
 
         // VALIDATE FORM
-        validateUpdateSocioForm: (state, action: PayloadAction<SocioBody>) => {
+        validateUpdateSocioForm: (state, _action: PayloadAction<SocioBody>) => {
             state.error = null;
         }
 

@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
-import { RootState } from "../../store/configStore/store";
-import { ItemState } from "../../types/commons";
-import { EForm, EFormBody, UpdateEFormParams } from "../../types/eform";
-import { Socio } from "../../types/socios";
-import { showEFormRequest, storeEFormRequest, updateEFormRequest } from "../../store/features/forms/EForm/EFormSlice";
-import { showSocioRequest } from "../../store/features/socios/sociosSlice";
+import { RootState } from "../../../../store/configStore/store";
+import { ItemState } from "../../../../types/commons";
+import { EForm, EFormBody, UpdateEFormParams } from "../../../../types/eform";
+import { Socio } from "../../../../types/socios";
+import { showEFormRequest, storeEFormRequest, updateEFormRequest } from "../../../../store/features/forms/EForm/EFormSlice";
+import { showSocioRequest } from "../../../../store/features/socios/sociosSlice";
 import { addToast, Button, Divider, Input, Link, Select, SelectItem, Textarea } from "@heroui/react";
-import { DFormTipo, socioForms } from "../../types/combos";
+import { DFormTipo, socioForms } from "../../../../types/combos";
 import { commonLeftLabelClassNames } from "./AFormPage";
 
 const EFormPage: React.FC = () => {
@@ -163,7 +163,7 @@ const EFormPage: React.FC = () => {
     return (
         <form onSubmit={onSubmit} className="w-full flex flex-col gap-8">
             <div className="flex flex-row items-center gap-4">
-                <span className="font-semibold text-xl">{socioForms.at(3)?.label}</span>
+                <span className="font-semibold text-xl">{socioForms.at(4)?.label}</span>
                 <span className="bg-gray-100 text-gray-500 border-gray-200 border-1.5 text-sm p-2 rounded-xl">{parsedEFormId ? `E-${parsedEFormId}` : 'CREACIÓN'}</span>
             </div>
             <div className="w-full flex flex-col gap-4">
@@ -319,7 +319,7 @@ const EFormPage: React.FC = () => {
                     variant="solid"
                     isLoading={form.loading}
                     as={Link}
-                    href={`/sia/socios/${socioId}?tab=forms&form=4`}
+                    href={`/sur/app/#/sia/socios/${socioId}?tab=forms&form=4`}
                 >
                     Regresar
                 </Button>

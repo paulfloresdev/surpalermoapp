@@ -55,7 +55,6 @@ const UpdateEmergenciaModal: React.FC<UpdateEmergenciaModalProps> = ({ item, set
     }
 
     const abort = () => {
-        console.log('ejecutado');
         setShouldRefresh(false);
         closeModal();
     }

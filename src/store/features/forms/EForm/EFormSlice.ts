@@ -2,6 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { EForm, EFormBody, UpdateEFormParams } from "../../../../types/eform";
 import { CrudState, Response } from "../../../../types/commons";
 import { PaginatedItems } from "../../../../types/responses";
+import { FormParams } from "../../../../types/aform";
 
 const initialState: CrudState<EForm> = {
     data: null,
@@ -29,7 +30,7 @@ const eFormSlice = createSlice({
         },
 
         //  INDEX
-        indexEFormsRequest: (state, _action: PayloadAction<string>) => {
+        indexEFormsRequest: (state, _action: PayloadAction<FormParams>) => {
             state.loading = true;
             state.error = null;
         },

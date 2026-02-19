@@ -5,8 +5,10 @@ export const AUTH_ME = "/auth/me"
 export const AUTH_UPDATE_DATA = "/auth/update-data"
 export const AUTH_UPDATE_PASSWORD = "/auth/update-password"
 export const AUTH_LOGOUT = "/auth/logout"
+export const AUTH_GET_USERS = "/auth/users"
 
-// SOCIOS
+
+//  ENTIDADES
 export const SOCIOS = "/socios"
 export const DEPARTAMENTOS = "/departamentos"
 export const LOCALIDADES = "/localidades"
@@ -16,6 +18,17 @@ export const PROGRAMAS = "/programas"
 export const SOCIOPROGAMAPIVOTS = "/socio-programa-pivots"
 export const GRUPOS = "/grupos"
 export const SOCIOGRUPOPIVOTS = "/socio-grupo-pivots"
+export const TICKETS = "/tickets"
+export const SOCIOFILETYPES = "/socio-file-types"
+export const SOCIOFILES = "/socio-files";
+export const FUNCIONARIOS = "/funcionarios";
+export const DOCENTES = "/docentes";
+export const MEDICOS = "/medicos";
+export const GROUPFORMS = "/group-forms";
+export const DOCENTEGRUPOPIVOTS = "/docente-grupo-pivots";
+export const COORDINADORES = "/coordinadores";
+export const DOCENTEFORMS = "/docente-forms";
+
 
 //  FORMS
 export const AFORMS = "/a-forms"

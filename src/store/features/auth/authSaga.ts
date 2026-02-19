@@ -11,10 +11,13 @@ import {
     logOutSuccess,
     meRequest,
     meSuccess,
-    meFailure
+    meFailure,
+    getUsersSuccess,
+    getUsersFailure,
+    getUsersRequest
 } from './authSlice';
 
-import { logInAPI, signUpAPI, logOutAPI, meAPI } from '../../../helper/api/backend';
+import { logInAPI, signUpAPI, logOutAPI, meAPI, getUsersAPI } from '../../../helper/api/backend';
 
 function* logInSaga(action: any): Generator<any, any, any> {
     try {
@@ -45,7 +48,7 @@ function* logOutSaga(): Generator<any, any, any> {
     localStorage.removeItem('token');
 
     // Redirigir inmediatamente
-    window.location.href = '/login'; // fuerza recarga completa
+    window.location.href = '/sur/app/#/sia/login'; // fuerza recarga completa
 
     // Luego actualizas el estado redux
     yield put(logOutSuccess());
@@ -68,10 +71,22 @@ function* meSaga(): Generator<any, any, any> {
     }
 }
 
+function* getUsersSaga(acition: any): Generator<any, any, any> {
+    try {
+        const res = yield call(getUsersAPI, acition.payload);
+        yield put(getUsersSuccess(res.data));
+    } catch (error: any) {
+        yield put(getUsersFailure("Error al obtener usuarios"));
+    }
+}
+
+
 
 export function* watchAuthSaga() {
     yield takeLatest(logInRequest.type, logInSaga);
     yield takeLatest(signUpRequest.type, signUpSaga);
     yield takeLatest(logOutRequest.type, logOutSaga);
     yield takeLatest(meRequest.type, meSaga);
+    yield takeLatest(getUsersRequest.type, getUsersSaga);
+
 }

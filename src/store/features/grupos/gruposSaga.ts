@@ -1,6 +1,6 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
-import { clearGruposRequest, destroyGrupoFailure, destroyGrupoRequest, destroyGrupoSuccess, getByProgramasOfSocioFailure, getByProgramasOfSocioRequest, getByProgramasOfSocioSuccess, indexGruposFailure, indexGruposRequest, indexGruposSuccess, showGrupoFailure, showGrupoRequest, showGrupoSuccess, storeGrupoFailure, storeGrupoRequest, updateGrupoFailure, updateGrupoRequest, updateGrupoSuccess } from './gruposSlice';
-import { destroyGrupoAPI, getByProgramasOfSocioAPI, indexGruposAPI, showGrupoAPI, storeGrupoAPI, updateGrupoAPI } from '../../../helper/api/backend';
+import { clearGruposRequest, destroyGrupoFailure, destroyGrupoRequest, destroyGrupoSuccess, getByProgramasOfSocioFailure, getByProgramasOfSocioRequest, getByProgramasOfSocioSuccess, indexGruposFailure, indexGruposRequest, indexGruposSuccess, paginatedGruposFailure, paginatedGruposSuccess, paginatedGruposRequest, showGrupoFailure, showGrupoRequest, showGrupoSuccess, storeGrupoFailure, storeGrupoRequest, updateGrupoFailure, updateGrupoRequest, updateGrupoSuccess, storeGrupoSuccess } from './gruposSlice';
+import { destroyGrupoAPI, getByProgramasOfSocioAPI, indexGruposAPI, paginatedGruposAPI, showGrupoAPI, storeGrupoAPI, updateGrupoAPI } from '../../../helper/api/backend';
 
 function* indexGruposSaga(): Generator<any, any, any> {
     try {
@@ -12,11 +12,21 @@ function* indexGruposSaga(): Generator<any, any, any> {
     }
 }
 
+function* paginatedGruposSaga(action: any): Generator<any, any, any> {
+    try {
+        yield put(clearGruposRequest());
+        const res = yield call(paginatedGruposAPI, action.payload);
+        yield put(paginatedGruposSuccess(res.data));
+    } catch (error: any) {
+        yield put(paginatedGruposFailure(error?.response?.data?.message || 'Error'))
+    }
+}
+
 function* storeGrupoSaga(action: any): Generator<any, any, any> {
     try {
         yield put(clearGruposRequest());
         const res = yield call(storeGrupoAPI, action.payload);
-        yield put(indexGruposSuccess({ data: res.data, message: res.message }));
+        yield put(storeGrupoSuccess({ data: res.data, message: res.message }));
     } catch (error: any) {
         yield put(storeGrupoFailure(error?.response?.data?.message || 'Error'));
     }
@@ -64,6 +74,7 @@ function* getByProgramasOfSocioSaga(action: any): Generator<any, any, any> {
 
 export function* watchGruposSaga() {
     yield takeLatest(indexGruposRequest.type, indexGruposSaga);
+    yield takeLatest(paginatedGruposRequest.type, paginatedGruposSaga);
     yield takeLatest(storeGrupoRequest.type, storeGrupoSaga);
     yield takeLatest(showGrupoRequest.type, showGrupoSaga);
     yield takeLatest(updateGrupoRequest.type, updateGrupoSaga);

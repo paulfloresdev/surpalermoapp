@@ -6,8 +6,9 @@ import { Input, Select, SelectItem, Textarea } from "@heroui/react";
 import { BoolParse, DateToInput, YNParse } from "../../../../helper/utils/Format";
 import { setUpdateSocioForm } from "../../../../store/features/forms/UpdateSocioFormSlice";
 import { YNCombo } from "../../../../types/combos";
+import { SocioTabProps } from "./PersonalSocioTab";
 
-const JobSocioTab: React.FC = () => {
+const JobSocioTab: React.FC<SocioTabProps> = ({ editable }) => {
     const dispatch = useDispatch();
 
     const { data } = useSelector((state: RootState) => state.updateSocioForm);
@@ -16,6 +17,7 @@ const JobSocioTab: React.FC = () => {
         <TabCard>
             <div>
                 <Select
+                    disabled={!editable}
                     required
                     placeholder="Trabajo"
                     label="Trabajo"
@@ -32,16 +34,18 @@ const JobSocioTab: React.FC = () => {
                 </Select>
             </div>
             <Input
+                disabled={!editable}
                 placeholder="Último Trabajo"
                 label="Último Trabajo"
                 labelPlacement="outside"
                 type="date"
                 value={DateToInput(data?.fecha_ultimo_trabajo)}
                 onChange={(e) => {
-                    dispatch(setUpdateSocioForm({ key: "fecha_ultimo_trabajo", value: new Date(e.target.value) }));
+                    dispatch(setUpdateSocioForm({ key: "fecha_ultimo_trabajo", value: new Date(e.target.value).toDateString() }));
                 }}
             />
             <Textarea
+                disabled={!editable}
                 placeholder="Tareas"
                 label="Tareas"
                 labelPlacement="outside"

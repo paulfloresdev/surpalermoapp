@@ -2,6 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { DForm, DFormBody, UpdateDFormParams } from "../../../../types/dform";
 import { CrudState, Response } from "../../../../types/commons";
 import { PaginatedItems } from "../../../../types/responses";
+import { FormParams } from "../../../../types/aform";
 
 const initialState: CrudState<DForm> = {
     data: null,
@@ -29,7 +30,7 @@ const dFormSlice = createSlice({
         },
 
         //  INDEX
-        indexDFormsRequest: (state, _action: PayloadAction<string>) => {
+        indexDFormsRequest: (state, _action: PayloadAction<FormParams>) => {
             state.loading = true;
             state.error = null;
         },

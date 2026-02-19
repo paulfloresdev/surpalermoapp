@@ -1,13 +1,13 @@
-import { Button } from "@heroui/react";
+
 import React from "react";
 import { Link } from "react-router-dom";
 import DynamicFaIcon from "../DynamicFaIcon";
-import { SideBarOptionProps } from "../../interfaces/layoutInterfaces";
+import { SideBarOptionProps } from "../../types/layout";
 
-const SideBarOption: React.FC<SideBarOptionProps> = ({ page, index, label, icon, href }) => {
+const SideBarOption: React.FC<SideBarOptionProps> = ({ page, index, icon, href }) => {
     return (
         <li>
-            <Link 
+            <Link
                 to={href}
                 className={`w-full flex items-center justify-center ${page === index ? 'bg-gray-300 text-red-500' : ''} h-14 rounded-lg transition-colors duration-200 hover:bg-gray-200`}
             >

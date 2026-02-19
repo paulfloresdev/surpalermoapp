@@ -1,5 +1,6 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import {
+    addToast,
     Button, Card, Code, Dropdown, DropdownItem, DropdownMenu,
     DropdownTrigger, Input, Pagination, Select, SelectItem, Table,
     TableBody, TableCell, TableColumn, TableHeader, TableRow
@@ -16,6 +17,9 @@ import CustomColumn from "../../../../components/layout/CustomColumn";
 import { DateToDMY } from "../../../../helper/utils/Format";
 import InscriptionSocioGroupModal from "../modals/groups/InscriptionSocioGroupModal";
 import UpdateSocioGroupModal from "../modals/groups/UpdateSocioGroupModal";
+import LoadingReport from "../../../../components/layout/LoadingReport";
+import { getFilenameFromDisposition } from "./SocioFilesTab";
+import { searchSocioGrupoPivotsAPI } from "../../../../helper/api/backend";
 
 const GroupsSocioTab: React.FC<{ socioId: number }> = ({ socioId }) => {
     const dispatch = useDispatch();
@@ -33,12 +37,16 @@ const GroupsSocioTab: React.FC<{ socioId: number }> = ({ socioId }) => {
     const [openInscription, setOpenInscription] = useState<boolean>(false);
     const [openUpdate, setOpenUpdate] = useState<boolean>(false);
     const [shouldRefresh, setShouldRefresh] = useState(true);
+    const [downloading, setDownloading] = useState(false);
 
     const [selectedGroup, setSelectedGroup] = useState<undefined | SocioGrupoPivot>(undefined);
 
     useEffect(() => {
         if (!openInscription && !openUpdate) {
-            makeSearch();
+            if (shouldRefresh) {
+                makeSearch();
+            }
+            setShouldRefresh(true);
         }
     }, [page, order, itemsPerPage, openInscription, openUpdate]);
 
@@ -50,13 +58,14 @@ const GroupsSocioTab: React.FC<{ socioId: number }> = ({ socioId }) => {
         }
     }, [selectedGroup]);
 
-    const buildParams = (): SearchSocioGrupoPivotsParams => ({
+    const buildParams = (excel = false): SearchSocioGrupoPivotsParams => ({
         page,
         body: {
             socio_id: socioId,
             order,
             search: search.trim() !== "" ? search : undefined,
-            per_page: itemsPerPage
+            per_page: itemsPerPage,
+            excel: excel
         }
     });
 
@@ -67,6 +76,82 @@ const GroupsSocioTab: React.FC<{ socioId: number }> = ({ socioId }) => {
     const handleClick = (asc: number, desc: number) => {
         setOrder(order === asc ? desc : asc);
     };
+
+    const downloadExcel = async () => {
+        setDownloading(true);
+
+        try {
+            const params = buildParams(true);
+            const res = await searchSocioGrupoPivotsAPI(params);
+
+            const contentType = String(
+                res.headers?.["content-type"] ?? res.headers?.["Content-Type"] ?? ""
+            );
+
+            // Si NO es xlsx, seguramente es JSON/HTML (error). Léelo y muestra mensaje.
+            if (!contentType.includes("application/vnd.openxmlformats-officedocument")) {
+                const data = res.data;
+
+                const text =
+                    data instanceof Blob
+                        ? await data.text()
+                        : typeof data === "string"
+                            ? data
+                            : JSON.stringify(data);
+
+                let message = text;
+
+                try {
+                    const json = JSON.parse(text);
+                    message = json?.message ?? message;
+                } catch { }
+
+                throw new Error(message);
+            }
+
+            // Normaliza a Blob real
+            const data = res.data;
+            const blob =
+                data instanceof Blob
+                    ? data
+                    : new Blob([data], {
+                        type:
+                            contentType ||
+                            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                    });
+
+            const cd =
+                (res.headers?.["content-disposition"] as string | undefined) ??
+                (res.headers?.["Content-Disposition"] as string | undefined);
+
+            const filenameFromHeader = getFilenameFromDisposition(cd);
+            const filename = filenameFromHeader ?? "grupos_socio.xlsx";
+
+            const blobUrl = URL.createObjectURL(blob);
+
+            const a = document.createElement("a");
+            a.href = blobUrl;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+
+            URL.revokeObjectURL(blobUrl);
+        } catch (error: any) {
+            addToast({
+                title: "Error",
+                description: error?.message || "No se pudo descargar",
+                color: "danger",
+            });
+        } finally {
+            setDownloading(false);
+        }
+    };
+
+
+    if (downloading) {
+        return <LoadingReport />;
+    }
 
     return (
         <Card className="w-full flex flex-col gap-8 p-10">
@@ -112,7 +197,7 @@ const GroupsSocioTab: React.FC<{ socioId: number }> = ({ socioId }) => {
                             <Button
                                 disableRipple
                                 className="bg-cyan-900 text-white"
-                                endContent={<DynamicFaIcon name="FaAngleDown" size={16} className="text-gray-100" />}
+                                endContent={<DynamicFaIcon name="FaAngleDown" size={16} className="!text-white" />}
                                 variant="solid"
                                 size="sm"
                             >
@@ -120,8 +205,13 @@ const GroupsSocioTab: React.FC<{ socioId: number }> = ({ socioId }) => {
                             </Button>
                         </DropdownTrigger>
                         <DropdownMenu>
-                            <DropdownItem key={1}>Exportar Excel</DropdownItem>
-                            <DropdownItem key={2}>Exportar PDF</DropdownItem>
+                            <DropdownItem
+                                key={1}
+                                endContent={<DynamicFaIcon name="FaFileExcel" className="!text-emerald-500" />}
+                                onPress={downloadExcel}
+                            >
+                                Exportar a Excel
+                            </DropdownItem>
                         </DropdownMenu>
                     </Dropdown>
                 </div>
@@ -170,12 +260,7 @@ const GroupsSocioTab: React.FC<{ socioId: number }> = ({ socioId }) => {
                     <TableColumn className={TABLE_COLUMN_CLASSNAME}>Horario</TableColumn>
                     <TableColumn className={TABLE_COLUMN_CLASSNAME}>Programa</TableColumn>
                     <TableColumn className={TABLE_COLUMN_CLASSNAME}>Fecha Baja</TableColumn>
-                    <TableColumn
-                        className={`${TABLE_COLUMN_CLASSNAME}`}
-                        onClick={() => { }}
-                    >
-                        <span className='text-sm'>Motivo</span>
-                    </TableColumn>
+                    <TableColumn className={TABLE_COLUMN_CLASSNAME}>Motivo</TableColumn>
                 </TableHeader>
 
                 <TableBody>
@@ -201,7 +286,7 @@ const GroupsSocioTab: React.FC<{ socioId: number }> = ({ socioId }) => {
                                 <TableCell>${item.grupo?.costo_base}</TableCell>
                                 <TableCell>{`${item.grupo.hora_inicio} - ${item.grupo.hora_fin}`}</TableCell>
                                 <TableCell>{item.grupo?.programa?.nombre}</TableCell>
-                                <TableCell className='rounded-r-xl'>
+                                <TableCell>
                                     {item.fecha_baja && (
                                         <Code className="font-sans" color="danger">
                                             {DateToDMY(item.fecha_baja)}

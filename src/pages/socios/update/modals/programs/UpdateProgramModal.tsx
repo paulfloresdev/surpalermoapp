@@ -7,7 +7,7 @@ import { SocioProgramaPivot, SocioProgramaPivotBody, UpdateSocioProgramaPivotPar
 import { updateSocioProgramaPivotRequest } from "../../../../../store/features/socioProgramaPivots/socioProgramaPivotsSlice";
 import { BoolParse, DateToInput, YNParse } from "../../../../../helper/utils/Format";
 import { MotivoBajaPrograma, YNCombo } from "../../../../../types/combos";
-import { commonLeftLabelClassNames } from "../../../../fichas/AFormPage";
+import { commonLeftLabelClassNames } from "../../fichas/AFormPage";
 
 interface UpdateSocioProgramProps extends ControlledModal {
     item: SocioProgramaPivot;

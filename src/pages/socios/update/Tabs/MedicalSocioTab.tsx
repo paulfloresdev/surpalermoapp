@@ -10,8 +10,9 @@ import { ListState } from "../../../../types/commons";
 import { Mutualista } from "../../../../types/mutualistas";
 import { Emergencia } from "../../../../types/emergencias";
 import CustomSkeleton from "../../../../components/CustomSkeleton";
+import { SocioTabProps } from "./PersonalSocioTab";
 
-const MedicalSocioTab: React.FC = () => {
+const MedicalSocioTab: React.FC<SocioTabProps> = ({ editable }) => {
     const dispatch = useDispatch();
 
     const { data } = useSelector((state: RootState) => state.updateSocioForm);
@@ -26,6 +27,7 @@ const MedicalSocioTab: React.FC = () => {
     return (
         <TabCard>
             <Textarea
+                disabled={!editable}
                 placeholder="Dervidado por"
                 label="Derividado por"
                 labelPlacement="outside"
@@ -35,6 +37,7 @@ const MedicalSocioTab: React.FC = () => {
                 }}
             />
             <Textarea
+                disabled={!editable}
                 placeholder="Diagnostico"
                 label="Diagnostico"
                 labelPlacement="outside"
@@ -44,6 +47,7 @@ const MedicalSocioTab: React.FC = () => {
                 }}
             />
             <Textarea
+                disabled={!editable}
                 placeholder="Medicación"
                 label="Medicación"
                 labelPlacement="outside"
@@ -53,6 +57,7 @@ const MedicalSocioTab: React.FC = () => {
                 }}
             />
             <Textarea
+                disabled={!editable}
                 placeholder="Antecedentes Médicos"
                 label="Antecedentes Médicos"
                 labelPlacement="outside"
@@ -62,6 +67,7 @@ const MedicalSocioTab: React.FC = () => {
                 }}
             />
             <Textarea
+                disabled={!editable}
                 placeholder="Antecedentes Familiares"
                 label="Antecedentes Familiares"
                 labelPlacement="outside"
@@ -71,6 +77,7 @@ const MedicalSocioTab: React.FC = () => {
                 }}
             />
             <Textarea
+                disabled={!editable}
                 placeholder="Antecedentes Psiquiátricos"
                 label="Antecedentes Psiquiátricos"
                 labelPlacement="outside"
@@ -80,6 +87,7 @@ const MedicalSocioTab: React.FC = () => {
                 }}
             />
             <Select
+                disabled={!editable}
                 required
                 placeholder="Carnet de Asistencia"
                 label="Carnet de Asistencia"
@@ -99,6 +107,7 @@ const MedicalSocioTab: React.FC = () => {
                     mutualistas.loading ?
                         <CustomSkeleton /> :
                         <Select
+                            disabled={!editable}
                             required
                             placeholder="Mutualista Socio"
                             label="Mutualista Socio"
@@ -121,6 +130,7 @@ const MedicalSocioTab: React.FC = () => {
                     emergencias.loading ?
                         <CustomSkeleton /> :
                         <Select
+                            disabled={!editable}
                             required
                             placeholder="Emergencia"
                             label="Emergencia"
@@ -138,6 +148,7 @@ const MedicalSocioTab: React.FC = () => {
                 }
             </>
             <Select
+                disabled={!editable}
                 required
                 placeholder="Convenio Mixto"
                 label="Convenio Mixto"
@@ -157,6 +168,7 @@ const MedicalSocioTab: React.FC = () => {
                     mutualistas.loading ?
                         <CustomSkeleton /> :
                         <Select
+                            disabled={!editable}
                             required
                             placeholder="Mutualista Convenio"
                             label="Mutualista Convenio"
@@ -174,6 +186,7 @@ const MedicalSocioTab: React.FC = () => {
                 }
             </>
             <Input
+                disabled={!editable}
                 placeholder="Internaciones"
                 label="Internaciones"
                 labelPlacement="outside"
@@ -183,6 +196,7 @@ const MedicalSocioTab: React.FC = () => {
                 }}
             />
             <Input
+                disabled={!editable}
                 placeholder="Nro. IAE"
                 label="Nro. IAE"
                 labelPlacement="outside"

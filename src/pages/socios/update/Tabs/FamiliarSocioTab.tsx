@@ -4,8 +4,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../../store/configStore/store";
 import { Input, Textarea } from "@heroui/react";
 import { setUpdateSocioForm } from "../../../../store/features/forms/UpdateSocioFormSlice";
+import { SocioTabProps } from "./PersonalSocioTab";
 
-const FamiliarSocioTab: React.FC = () => {
+const FamiliarSocioTab: React.FC<SocioTabProps> = ({ editable }) => {
     const dispatch = useDispatch();
 
     const { data } = useSelector((state: RootState) => state.updateSocioForm);
@@ -13,6 +14,7 @@ const FamiliarSocioTab: React.FC = () => {
     return (
         <TabCard>
             <Input
+                disabled={!editable}
                 placeholder="Teléfono Persona de Contacto"
                 label="Teléfono Persona de Contacto"
                 labelPlacement="outside"
@@ -22,6 +24,7 @@ const FamiliarSocioTab: React.FC = () => {
                 }}
             />
             <Textarea
+                disabled={!editable}
                 placeholder="Contacto Extra Familiar"
                 label="Contacto Extra Familiar"
                 labelPlacement="outside"
@@ -31,6 +34,7 @@ const FamiliarSocioTab: React.FC = () => {
                 }}
             />
             <Textarea
+                disabled={!editable}
                 placeholder="Nucleo Familiar"
                 label="Nucleo Familiar"
                 labelPlacement="outside"

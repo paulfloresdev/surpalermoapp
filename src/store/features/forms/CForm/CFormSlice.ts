@@ -2,6 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { CrudState, Response } from "../../../../types/commons";
 import { CForm, CFormBody, UpdateCFormParams } from "../../../../types/cform";
 import { PaginatedItems } from "../../../../types/responses";
+import { FormParams } from "../../../../types/aform";
 
 const initialState: CrudState<CForm> = {
     data: null,
@@ -29,7 +30,7 @@ const cFormSlice = createSlice({
         },
 
         //  INDEX
-        indexCFormsRequest: (state, _action: PayloadAction<string>) => {
+        indexCFormsRequest: (state, _action: PayloadAction<FormParams>) => {
             state.loading = true;
             state.error = null;
         },

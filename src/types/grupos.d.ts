@@ -1,4 +1,4 @@
-import { Entity, UpdateParams } from "./commons";
+import { Entity, Paginated, UpdateParams } from "./commons";
 import { Programa } from "./programas";
 
 export interface Grupo extends Entity {
@@ -24,10 +24,20 @@ export interface GrupoBody {
     fecha_inicio: Date | undefined;
     fecha_fin: Date | undefined;
     nombre: string;
-    desripcion: string | undefined;
+    descripcion: string | undefined;
     costo_base: number | undefined;
     activo: boolean | undefined;
     programa_id: number;
 }
 
 export interface UpdateGrupoParams extends UpdateParams<GrupoBody> { }
+
+export interface PaginatedGruposBody extends Paginated {
+    search: undefined | string;
+    excel: undefined | boolean;
+}
+
+export interface PaginatedGruposParams {
+    page: undefined | number;
+    body: PaginatedGruposBody;
+}

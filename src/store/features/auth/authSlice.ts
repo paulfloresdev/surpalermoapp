@@ -1,8 +1,10 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { AuthState, LogInParams, User } from "../../../types/auth";
+import { AuthResponse, AuthState, GetUsersParams, LogInParams, SignUpParams, User } from "../../../types/auth";
+import { PaginatedItems } from "../../../types/responses";
 
 const initialState: AuthState = {
     user: null,
+    users: null,
     token: null,
     loading: false,
     error: null,
@@ -13,7 +15,7 @@ const authSlice = createSlice({
     initialState,
     reducers: {
         //  LogIn
-        logInRequest: (state, action: PayloadAction<LogInParams>) => {
+        logInRequest: (state, _action: PayloadAction<LogInParams>) => {
             state.loading = true;
             state.error = null;
         },
@@ -29,11 +31,11 @@ const authSlice = createSlice({
         },
 
         //  SignUp
-        signUpRequest: (state, _action) => {
+        signUpRequest: (state, _action: PayloadAction<SignUpParams>) => {
             state.loading = true;
             state.error = null;
         },
-        signUpSuccess: (state, action: PayloadAction<{ user: User; token: string }>) => {
+        signUpSuccess: (state, action: PayloadAction<AuthResponse>) => {
             state.loading = false;
             state.user = action.payload.user;
             state.token = action.payload.token;
@@ -79,6 +81,22 @@ const authSlice = createSlice({
             state.loading = false;
             state.error = action.payload;
         },
+
+        //  GET USERS
+        getUsersRequest: (state, _action: PayloadAction<GetUsersParams>) => {
+            state.loading = true;
+            state.error = null;
+        },
+        getUsersSuccess: (state, action: PayloadAction<PaginatedItems<User>>) => {
+            state.loading = false;
+            state.users = action.payload;
+        },
+        getUsersFailure: (state, action: PayloadAction<string>) => {
+            state.loading = false;
+            state.error = action.payload;
+        },
+
+
     }
 });
 
@@ -94,7 +112,10 @@ export const {
     logOutFailure,
     meRequest,
     meSuccess,
-    meFailure
+    meFailure,
+    getUsersRequest,
+    getUsersSuccess,
+    getUsersFailure,
 } = authSlice.actions;
 
 export default authSlice.reducer;

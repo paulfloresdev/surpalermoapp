@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { CrudState } from "../../../types/commons";
-import { SearchSocioGrupoPivotsParams, SocioGrupoPivot, SocioGrupoPivotBody, UpdateSocioGrupoPivotParams } from "../../../types/socioGrupoPivots";
+import { CrudState, Response } from "../../../types/commons";
+import { GetSociosByGrupoParams, SearchSocioGrupoPivotsParams, SocioGrupoPivot, SocioGrupoPivotBody, UpdateSocioGrupoPivotParams } from "../../../types/socioGrupoPivots";
 import { PaginatedItems } from "../../../types/responses";
 
 const initialState: CrudState<SocioGrupoPivot> = {
@@ -33,9 +33,10 @@ const socioGrupoPivotsSlice = createSlice({
             state.loading = true;
             state.error = null;
         },
-        indexSocioGrupoPivotsSuccess: (state, action: PayloadAction<SocioGrupoPivot[]>) => {
+        indexSocioGrupoPivotsSuccess: (state, action: PayloadAction<Response<SocioGrupoPivot[]>>) => {
             state.loading = false;
-            state.data = action.payload;
+            state.data = action.payload.data;
+            state.message = action.payload.message;
             state.indexSuccess = true;
         },
         indexSocioGrupoPivotsFailure: (state, action: PayloadAction<string>) => {
@@ -49,9 +50,10 @@ const socioGrupoPivotsSlice = createSlice({
             state.loading = true;
             state.error = null;
         },
-        storeSocioGrupoPivotSuccess: (state, action: PayloadAction<SocioGrupoPivot>) => {
+        storeSocioGrupoPivotSuccess: (state, action: PayloadAction<Response<SocioGrupoPivot>>) => {
             state.loading = false;
-            state.data = action.payload;
+            state.data = action.payload.data;
+            state.message = action.payload.message;
             state.storeSuccess = true;
         },
         storeSocioGrupoPivotFailure: (state, action: PayloadAction<string>) => {
@@ -65,9 +67,10 @@ const socioGrupoPivotsSlice = createSlice({
             state.loading = true;
             state.error = null;
         },
-        showSocioGrupoPivotSuccess: (state, action: PayloadAction<SocioGrupoPivot>) => {
+        showSocioGrupoPivotSuccess: (state, action: PayloadAction<Response<SocioGrupoPivot>>) => {
             state.loading = false;
-            state.data = action.payload;
+            state.data = action.payload.data;
+            state.message = action.payload.message;
             state.showSuccess = true;
         },
         showSocioGrupoPivotFailure: (state, action: PayloadAction<string>) => {
@@ -81,9 +84,10 @@ const socioGrupoPivotsSlice = createSlice({
             state.loading = true;
             state.error = null;
         },
-        updateSocioGrupoPivotSuccess: (state, action: PayloadAction<SocioGrupoPivot>) => {
+        updateSocioGrupoPivotSuccess: (state, action: PayloadAction<Response<SocioGrupoPivot>>) => {
             state.loading = false;
-            state.data = action.payload;
+            state.data = action.payload.data;
+            state.message = action.payload.message;
             state.updateSuccess = true;
         },
         updateSocioGrupoPivotFailure: (state, action: PayloadAction<string>) => {
@@ -97,9 +101,10 @@ const socioGrupoPivotsSlice = createSlice({
             state.loading = true;
             state.error = null;
         },
-        destroySocioGrupoPivotSuccess: (state) => {
+        destroySocioGrupoPivotSuccess: (state, action: PayloadAction<string>) => {
             state.loading = false;
             state.data = null;
+            state.message = action.payload;
             state.destroySuccess = true;
         },
         destroySocioGrupoPivotFailure: (state, action: PayloadAction<string>) => {
@@ -113,9 +118,10 @@ const socioGrupoPivotsSlice = createSlice({
             state.loading = true;
             state.error = null;
         },
-        searchSocioGrupoPivotsSuccess: (state, action: PayloadAction<PaginatedItems<SocioGrupoPivot>>) => {
+        searchSocioGrupoPivotsSuccess: (state, action: PayloadAction<Response<PaginatedItems<SocioGrupoPivot>>>) => {
             state.loading = false;
-            state.data = action.payload;
+            state.data = action.payload.data;
+            state.message = action.payload.message;
             state.indexSuccess = true;
         },
         searchSocioGrupoPivotsFailure: (state, action: PayloadAction<string>) => {
@@ -123,6 +129,23 @@ const socioGrupoPivotsSlice = createSlice({
             state.error = action.payload;
             state.indexSuccess = false;
         },
+
+        //  GET SOCIOS BY GRUPO
+        getSociosByGrupoRequest: (state, _action: PayloadAction<GetSociosByGrupoParams>) => {
+            state.loading = true;
+            state.error = null;
+        },
+        getSociosByGrupoSuccess: (state, action: PayloadAction<Response<PaginatedItems<SocioGrupoPivot>>>) => {
+            state.loading = false;
+            state.data = action.payload.data;
+            state.message = action.payload.message;
+            state.indexSuccess = true;
+        },
+        getSociosByGrupoFailure: (state, action: PayloadAction<string>) => {
+            state.loading = false;
+            state.error = action.payload;
+            state.indexSuccess = false;
+        }
     }
 });
 
@@ -146,6 +169,9 @@ export const {
     searchSocioGrupoPivotsRequest,
     searchSocioGrupoPivotsSuccess,
     searchSocioGrupoPivotsFailure,
+    getSociosByGrupoRequest,
+    getSociosByGrupoSuccess,
+    getSociosByGrupoFailure
 } = socioGrupoPivotsSlice.actions;
 
 export default socioGrupoPivotsSlice.reducer;

@@ -11,7 +11,11 @@ import { Departamento } from "../../../../types/departamentos";
 import CustomSkeleton from "../../../../components/CustomSkeleton";
 import { Localidad } from "../../../../types/localidades";
 
-const PersonalSocioTab: React.FC = () => {
+export interface SocioTabProps {
+    editable: boolean;
+}
+
+const PersonalSocioTab: React.FC<SocioTabProps> = ({ editable }) => {
     const dispatch = useDispatch();
 
     const { data } = useSelector((state: RootState) => state.updateSocioForm);
@@ -22,16 +26,18 @@ const PersonalSocioTab: React.FC = () => {
     return (
         <TabCard>
             <Input
+                disabled={!editable}
                 placeholder="Fecha Ingreso"
                 label="Fecha Ingreso"
                 labelPlacement="outside"
                 type="date"
                 value={DateToInput(data?.fecha_ingreso)}
                 onChange={(e) => {
-                    dispatch(setUpdateSocioForm({ key: "fecha_ingreso", value: new Date(e.target.value) }));
+                    dispatch(setUpdateSocioForm({ key: "fecha_ingreso", value: e.target.value }));
                 }}
             />
             <Select
+                disabled={!editable}
                 required
                 placeholder="Activo"
                 label="Activo*"
@@ -48,6 +54,7 @@ const PersonalSocioTab: React.FC = () => {
                 ))}
             </Select>
             <Input
+                disabled={!editable}
                 placeholder="DNI"
                 label="DNI"
                 labelPlacement="outside"
@@ -57,6 +64,7 @@ const PersonalSocioTab: React.FC = () => {
                 }}
             />
             <Input
+                disabled={!editable}
                 required
                 placeholder="Nombre"
                 label="Nombre*"
@@ -67,6 +75,7 @@ const PersonalSocioTab: React.FC = () => {
                 }}
             />
             <Input
+                disabled={!editable}
                 placeholder="Segundo Nombre"
                 label="Segundo Nombre"
                 labelPlacement="outside"
@@ -76,6 +85,7 @@ const PersonalSocioTab: React.FC = () => {
                 }}
             />
             <Input
+                disabled={!editable}
                 placeholder="Apellido Paterno"
                 label="Apellido Paterno"
                 labelPlacement="outside"
@@ -85,6 +95,7 @@ const PersonalSocioTab: React.FC = () => {
                 }}
             />
             <Input
+                disabled={!editable}
                 placeholder="Apellido Materno"
                 label="Apellido Materno"
                 labelPlacement="outside"
@@ -94,16 +105,18 @@ const PersonalSocioTab: React.FC = () => {
                 }}
             />
             <Input
+                disabled={!editable}
                 placeholder="Expiración DNI"
                 label="Expiración DNI"
                 labelPlacement="outside"
                 type="date"
                 value={DateToInput(data?.dni_expiracion)}
                 onChange={(e) => {
-                    dispatch(setUpdateSocioForm({ key: "dni_expiracion", value: new Date(e.target.value) }));
+                    dispatch(setUpdateSocioForm({ key: "dni_expiracion", value: e.target.value }));
                 }}
             />
             <Select
+                disabled={!editable}
                 required
                 placeholder="Con BPS"
                 label="Con BPS*"
@@ -119,6 +132,7 @@ const PersonalSocioTab: React.FC = () => {
                 ))}
             </Select>
             <Input
+                disabled={!editable}
                 placeholder="Calle"
                 label="Calle"
                 labelPlacement="outside"
@@ -128,6 +142,7 @@ const PersonalSocioTab: React.FC = () => {
                 }}
             />
             <Input
+                disabled={!editable}
                 placeholder="Número"
                 label="Número"
                 labelPlacement="outside"
@@ -137,6 +152,7 @@ const PersonalSocioTab: React.FC = () => {
                 }}
             />
             <Input
+                disabled={!editable}
                 placeholder="Apto"
                 label="Apto"
                 labelPlacement="outside"
@@ -146,6 +162,7 @@ const PersonalSocioTab: React.FC = () => {
                 }}
             />
             <Input
+                disabled={!editable}
                 placeholder="Barrio"
                 label="Barrio"
                 labelPlacement="outside"
@@ -159,6 +176,7 @@ const PersonalSocioTab: React.FC = () => {
                     departamentos.loading ?
                         <CustomSkeleton /> :
                         <Select
+                            disabled={!editable}
                             required
                             placeholder="Departamento"
                             label="Departamento"
@@ -180,6 +198,7 @@ const PersonalSocioTab: React.FC = () => {
                     localidades.loading ?
                         <CustomSkeleton /> :
                         <Select
+                            disabled={!editable}
                             required
                             placeholder="Localidad"
                             label="Localidad*"
@@ -197,6 +216,7 @@ const PersonalSocioTab: React.FC = () => {
                 }
             </>
             <Input
+                disabled={!editable}
                 placeholder="Teléfono"
                 label="Teléfono"
                 labelPlacement="outside"
@@ -206,6 +226,7 @@ const PersonalSocioTab: React.FC = () => {
                 }}
             />
             <Input
+                disabled={!editable}
                 placeholder="Email"
                 label="Email"
                 labelPlacement="outside"
@@ -215,6 +236,7 @@ const PersonalSocioTab: React.FC = () => {
                 }}
             />
             <Input
+                disabled={!editable}
                 size="sm"
                 placeholder="Celular"
                 label="Celular"
@@ -225,6 +247,7 @@ const PersonalSocioTab: React.FC = () => {
                 }}
             />
             <Select
+                disabled={!editable}
                 required
                 placeholder="Sexo"
                 label="Sexo*"
@@ -240,16 +263,18 @@ const PersonalSocioTab: React.FC = () => {
                 ))}
             </Select>
             <Input
+                disabled={!editable}
                 placeholder="Fecha Nacimiento"
                 label="Fecha Nacimiento"
                 labelPlacement="outside"
                 type="date"
                 value={DateToInput(data?.fecha_nacimiento)}
                 onChange={(e) => {
-                    dispatch(setUpdateSocioForm({ key: "fecha_nacimiento", value: new Date(e.target.value) }));
+                    dispatch(setUpdateSocioForm({ key: "fecha_nacimiento", value: e.target.value }));
                 }}
             />
             <Select
+                disabled={!editable}
                 required
                 placeholder="Pensión"
                 label="Pensión"
@@ -265,6 +290,7 @@ const PersonalSocioTab: React.FC = () => {
                 ))}
             </Select>
             <Textarea
+                disabled={!editable}
                 placeholder="Obs. Pensión"
                 label="Obs. Pensión"
                 labelPlacement="outside"
@@ -274,6 +300,7 @@ const PersonalSocioTab: React.FC = () => {
                 }}
             />
             <Input
+                disabled={!editable}
                 placeholder="Contacto"
                 label="Contacto"
                 labelPlacement="outside"
@@ -283,6 +310,7 @@ const PersonalSocioTab: React.FC = () => {
                 }}
             />
             <Input
+                disabled={!editable}
                 placeholder="Anterior"
                 label="Anterior"
                 labelPlacement="outside"
@@ -292,6 +320,7 @@ const PersonalSocioTab: React.FC = () => {
                 }}
             />
             <Input
+                disabled={!editable}
                 placeholder="Actual"
                 label="Actual"
                 labelPlacement="outside"
@@ -301,16 +330,18 @@ const PersonalSocioTab: React.FC = () => {
                 }}
             />
             <Input
+                disabled={!editable}
                 placeholder="Fecha Baja"
                 label="Fecha Baja"
                 labelPlacement="outside"
                 type="date"
                 value={DateToInput(data?.fecha_baja)}
                 onChange={(e) => {
-                    dispatch(setUpdateSocioForm({ key: "fecha_baja", value: new Date(e.target.value) }));
+                    dispatch(setUpdateSocioForm({ key: "fecha_baja", value: e.target.value }));
                 }}
             />
             <Select
+                disabled={!editable}
                 required
                 placeholder="Fallecido"
                 label="Fallecido"

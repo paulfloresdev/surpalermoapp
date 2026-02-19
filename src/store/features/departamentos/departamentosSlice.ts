@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Departamento, DepartamentoBody, UpdateDepartamentoParams } from "../../../types/departamentos";
 import { PaginatedItems } from "../../../types/responses";
-import { CrudState, PaginatedParams, Response } from "../../../types/commons";
+import { CrudState, ExcelSearchParams, PaginatedParams, Response } from "../../../types/commons";
 
 const initialState: CrudState<Departamento> = {
     data: null,
@@ -46,7 +46,7 @@ const departamentosSlice = createSlice({
         },
 
         //  PAGINATED
-        paginatedDepartamentosRequest: (state, _action: PayloadAction<PaginatedParams>) => {
+        paginatedDepartamentosRequest: (state, _action: PayloadAction<ExcelSearchParams>) => {
             state.loading = true;
             state.error = null;
         },

@@ -110,3 +110,7 @@ export class AFormLabels {
     static readonly EVALUACION_PROYECTO = "EVALUACIÓN DEL PROYECTO Y PASOS A SEGUIR TRABAJANDO";
 }
 
+export interface FormParams {
+    socioId: string | undefined;
+    page: string | undefined;
+}

@@ -2,12 +2,16 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store/configStore/store";
 import { SearchSociosBody, SearchSociosParams, Socio } from "../../types/socios";
-import { Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Input, Pagination, Select, SelectItem } from "@heroui/react";
+import { addToast, Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Input, Pagination, Select, SelectItem } from "@heroui/react";
 import DynamicFaIcon from "../../components/DynamicFaIcon";
 import { activeFilter, perPageOptions } from "../../types/combos";
 import SearchSociosTable from "../../components/layout/SearchSociosTable";
 import { PaginatedState } from "../../types/commons";
 import { searchSociosRequest } from "../../store/features/socios/sociosSlice";
+import StoreSocioModal from "./store/StoreSocioModal";
+import { searchSociosAPI } from "../../helper/api/backend";
+import { getFilenameFromDisposition } from "./update/tabs/SocioFilesTab";
+import LoadingReport from "../../components/layout/LoadingReport";
 
 const SociosPage: React.FC = () => {
     const dispatch = useDispatch();
@@ -19,12 +23,17 @@ const SociosPage: React.FC = () => {
     const [isActive, setIsActive] = useState<undefined | number>(undefined);
     const [itemsPerPage, setItemsPerPage] = useState<undefined | number>(10);
 
-    const buildParams = (): SearchSociosParams => {
+    const [openStore, setOpenStore] = useState<boolean>(false);
+    const [shouldRefresh, setShouldRefresh] = useState(true);
+    const [downloading, setDownloading] = useState(false);
+
+    const buildParams = (excel = false): SearchSociosParams => {
         const body: SearchSociosBody = {
             order,
             search,
             is_active: isActive == 1 ? true : isActive == 2 ? false : undefined,
-            per_page: itemsPerPage
+            per_page: itemsPerPage,
+            excel: excel
         }
 
         const params: SearchSociosParams = {
@@ -41,9 +50,14 @@ const SociosPage: React.FC = () => {
     }, [])
 
     useEffect(() => {
-        var params = buildParams();
-        dispatch(searchSociosRequest(params));
-    }, [page, order, itemsPerPage])
+        if (!openStore) {
+            if (shouldRefresh) {
+                var params = buildParams();
+                dispatch(searchSociosRequest(params));
+            }
+            setShouldRefresh(true);
+        }
+    }, [page, order, itemsPerPage, openStore])
 
     const handleOrderChange = (newOrderValue: number) => {
         setOrder(newOrderValue);
@@ -54,6 +68,82 @@ const SociosPage: React.FC = () => {
         setPage(1);
         var params = buildParams();
         dispatch(searchSociosRequest(params));
+    }
+
+    const downloadExcel = async () => {
+        setDownloading(true);
+
+        try {
+            const params = buildParams(true);
+            const res = await searchSociosAPI(params);
+
+            const contentType = String(
+                res.headers?.["content-type"] ?? res.headers?.["Content-Type"] ?? ""
+            );
+
+            // Si NO es xlsx, seguramente es JSON/HTML (error). Léelo y muestra mensaje.
+            if (!contentType.includes("application/vnd.openxmlformats-officedocument")) {
+                const data = res.data;
+
+                const text =
+                    data instanceof Blob
+                        ? await data.text()
+                        : typeof data === "string"
+                            ? data
+                            : JSON.stringify(data);
+
+                let message = text;
+
+                try {
+                    const json = JSON.parse(text);
+                    message = json?.message ?? message;
+                } catch { }
+
+                throw new Error(message);
+            }
+
+            // Normaliza a Blob real
+            const data = res.data;
+            const blob =
+                data instanceof Blob
+                    ? data
+                    : new Blob([data], {
+                        type:
+                            contentType ||
+                            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                    });
+
+            const cd =
+                (res.headers?.["content-disposition"] as string | undefined) ??
+                (res.headers?.["Content-Disposition"] as string | undefined);
+
+            const filenameFromHeader = getFilenameFromDisposition(cd);
+            const filename = filenameFromHeader ?? "socios.xlsx";
+
+            const blobUrl = URL.createObjectURL(blob);
+
+            const a = document.createElement("a");
+            a.href = blobUrl;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+
+            URL.revokeObjectURL(blobUrl);
+        } catch (error: any) {
+            addToast({
+                title: "Error",
+                description: error?.message || "No se pudo descargar",
+                color: "danger",
+            });
+        } finally {
+            setDownloading(false);
+        }
+    };
+
+
+    if (downloading) {
+        return <LoadingReport />;
     }
 
 
@@ -119,14 +209,9 @@ const SociosPage: React.FC = () => {
                             <DropdownItem
                                 key={1}
                                 endContent={<DynamicFaIcon name="FaFileExcel" className="!text-emerald-500" />}
+                                onPress={downloadExcel}
                             >
                                 Exportar a Excel
-                            </DropdownItem>
-                            <DropdownItem
-                                key={2}
-                                endContent={<DynamicFaIcon name="FaFilePdf" className="!text-danger" />}
-                            >
-                                Exportar a PDF
                             </DropdownItem>
                         </DropdownMenu>
                     </Dropdown>
@@ -136,6 +221,7 @@ const SociosPage: React.FC = () => {
                         endContent={<DynamicFaIcon name="FaPlus" size={16} className="text-white" />}
                         variant="solid"
                         size="sm"
+                        onPress={() => setOpenStore(true)}
                     >
                         Agregar
                     </Button>
@@ -199,7 +285,13 @@ const SociosPage: React.FC = () => {
                         />
                 }
             </>
-
+            {
+                openStore && <StoreSocioModal
+                    value={openStore}
+                    setValue={setOpenStore}
+                    setShouldRefresh={setShouldRefresh}
+                />
+            }
         </div >
     );
 }

@@ -5,7 +5,7 @@ import AppRoutes from "./routes";
 
 const App: React.FC = () => {
     return (
-        <Providers>
+        <Providers hash={true}>
             <div className="bg-white w-full h-dscreen font-sans">
                 <AppRoutes />
             </div>

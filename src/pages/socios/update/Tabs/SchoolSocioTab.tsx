@@ -5,8 +5,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../../store/configStore/store";
 import { setUpdateSocioForm } from "../../../../store/features/forms/UpdateSocioFormSlice";
 import { DateToInput } from "../../../../helper/utils/Format";
+import { SocioTabProps } from "./PersonalSocioTab";
 
-const SchoolSocioTab: React.FC = () => {
+const SchoolSocioTab: React.FC<SocioTabProps> = ({ editable }) => {
     const dispatch = useDispatch();
 
     const { data } = useSelector((state: RootState) => state.updateSocioForm);
@@ -14,6 +15,7 @@ const SchoolSocioTab: React.FC = () => {
     return (
         <TabCard>
             <Textarea
+                disabled={!editable}
                 placeholder="Estudios Realizados"
                 label="Estudios Realizados"
                 labelPlacement="outside"
@@ -23,6 +25,7 @@ const SchoolSocioTab: React.FC = () => {
                 }}
             />
             <Textarea
+                disabled={!editable}
                 placeholder="Último Aprobado"
                 label="Último Aprobado"
                 labelPlacement="outside"
@@ -32,6 +35,7 @@ const SchoolSocioTab: React.FC = () => {
                 }}
             />
             <Textarea
+                disabled={!editable}
                 placeholder="Cursos"
                 label="Cursos"
                 labelPlacement="outside"
@@ -41,13 +45,14 @@ const SchoolSocioTab: React.FC = () => {
                 }}
             />
             <Input
+                disabled={!editable}
                 placeholder="Último Curso"
                 label="Último Curso"
                 labelPlacement="outside"
                 type="date"
                 value={DateToInput(data?.ultimo_curso)}
                 onChange={(e) => {
-                    dispatch(setUpdateSocioForm({ key: "ultimo_curso", value: new Date(e.target.value) }));
+                    dispatch(setUpdateSocioForm({ key: "ultimo_curso", value: new Date(e.target.value).toDateString() }));
                 }}
             />
         </TabCard>

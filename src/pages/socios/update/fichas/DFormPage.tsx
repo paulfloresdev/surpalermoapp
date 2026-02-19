@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
-import { RootState } from "../../store/configStore/store";
-import { ItemState } from "../../types/commons";
-import { DForm, DFormBody, UpdateDFormParams } from "../../types/dform";
-import { Socio } from "../../types/socios";
-import { showDFormRequest, storeDFormRequest, updateDFormRequest } from "../../store/features/forms/DForm/DFormSlice";
-import { showSocioRequest } from "../../store/features/socios/sociosSlice";
+import { RootState } from "../../../../store/configStore/store";
+import { ItemState } from "../../../../types/commons";
+import { DForm, DFormBody, UpdateDFormParams } from "../../../../types/dform";
+import { Socio } from "../../../../types/socios";
+import { showDFormRequest, storeDFormRequest, updateDFormRequest } from "../../../../store/features/forms/DForm/DFormSlice";
+import { showSocioRequest } from "../../../../store/features/socios/sociosSlice";
 import { addToast, Button, Divider, Input, Link, Select, SelectItem, Textarea } from "@heroui/react";
-import { DFormTipo, socioForms } from "../../types/combos";
+import { DFormTipo, socioForms } from "../../../../types/combos";
 import { commonLeftLabelClassNames } from "./AFormPage";
 
 const DFormPage: React.FC = () => {
@@ -331,7 +331,7 @@ const DFormPage: React.FC = () => {
                     variant="solid"
                     isLoading={form.loading}
                     as={Link}
-                    href={`/sia/socios/${socioId}?tab=forms&form=3`}
+                    href={`/sur/app/#/sia/socios/${socioId}?tab=forms&form=3`}
                 >
                     Regresar
                 </Button>

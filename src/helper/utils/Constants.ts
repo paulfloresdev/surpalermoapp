@@ -1,1 +1,1 @@
-export const TABLE_COLUMN_CLASSNAME = "bg-transparent border-b !rounded-none"
+export const TABLE_COLUMN_CLASSNAME = "bg-transparent border-b !rounded-none text-sm"

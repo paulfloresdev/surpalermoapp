@@ -11,6 +11,17 @@ import programasReducer from '../features/programas/programasSlice';
 import socioProgramaPivotsReducer from '../features/socioProgramaPivots/socioProgramaPivotsSlice';
 import gruposReducer from '../features/grupos/gruposSlice';
 import socioGrupoPivotsReducer from '../features/socioGrupoPivots/socioGrupoPivotsSlice';
+import ticketsReducer from '../features/tickets/ticketsSlice';
+import socioFileTypesReducer from '../features/socioFileTypes/socioFileTypesSlice';
+import socioFilesReducer from '../features/socioFiles/socioFilesSlice';
+import funcionariosReducer from '../features/funcionarios/funcionariosSlice';
+import docentesReducer from '../features/docentes/docentesSlice';
+import medicosReducer from '../features/medicos/medicosSlice';
+import groupFormsReducer from '../features/groupForms/groupFormsSlice';
+import docenteGrupoPivotsReducer from '../features/docenteGrupoPivots/docenteGrupoPivotsSlice';
+import coordinadoresReducer from '../features/coordinadores/coordinadoresSlice';
+import docenteFormsReducer from '../features/docenteForms/docenteFormsSlice';
+
 
 // FORMS
 import updateSocioFormSlice from '../features/forms/UpdateSocioFormSlice';
@@ -32,6 +43,17 @@ const rootReducer = combineReducers({
     socioProgramaPivots: socioProgramaPivotsReducer,
     grupos: gruposReducer,
     socioGrupoPivots: socioGrupoPivotsReducer,
+    tickets: ticketsReducer,
+    socioFileTypes: socioFileTypesReducer,
+    socioFiles: socioFilesReducer,
+    funcionarios: funcionariosReducer,
+    docentes: docentesReducer,
+    medicos: medicosReducer,
+    groupForms: groupFormsReducer,
+    docenteGrupoPivots: docenteGrupoPivotsReducer,
+    coordinadores: coordinadoresReducer,
+    docenteForms: docenteFormsReducer,
+
 
     // FORMS
     updateSocioForm: updateSocioFormSlice,

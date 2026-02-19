@@ -22,11 +22,11 @@ export const SexCombo = [
 ];
 
 export const socioForms = [
-    { key: 0, code: "A", label: "A - CUESTIONARIO DE EVALUACIÓN INICIAL" },
+    { key: 0, code: "A", label: "A - FICHA DE EVALUACIÓN INICIAL EN RESIDENCIA ASISTIDA" },
     { key: 1, code: "B", label: "B - FICHA PERSONAL DE DERIVACIÓN A PROGRAMAS DEL CENTRO", },
     { key: 2, code: "C", label: "C - FICHA PERSONAL DE EGRESO" },
-    { key: 3, code: "D", label: "D - INFORME DE EVOLUCIÓN DEL TRATAMIENTO" },
-    { key: 4, code: "E", label: "E - SOLICITUD DE RENOVACIÓN" },
+    { key: 3, code: "D", label: "D - FICHA MUTUALISTA DE EVOLUCIÓN DEL TRATAMIENTO" },
+    { key: 4, code: "E", label: "E - FICHA MUTUALISTA SOLICITUD DE RENOVACIÓN" },
     //{ key: 5, code: "F", label: "" },
 ];
 

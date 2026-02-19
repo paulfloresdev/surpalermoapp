@@ -74,7 +74,7 @@ const SideBar: React.FC<SideBarProps> = ({ page }) => {
             <nav className="flex flex-col px-3 h-full overflow-hidden">
                 {/* Logo */}
                 <div className="w-full flex justify-center mb-8 shrink-0">
-                    <img src="/assets/favicon.png" alt="Logo" className="w-14" />
+                    <img src="/sur/app/assets/favicon.png" alt="Logo" className="w-14" />
                 </div>
 
                 {/* Menu options with scroll */}

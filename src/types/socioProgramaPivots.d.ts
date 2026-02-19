@@ -1,5 +1,5 @@
 import { Programa } from "./programas";
-import { Entity, Paginated, UpdateParams } from "./commons";
+import { Entity, Excel, Paginated, UpdateParams } from "./commons";
 
 export interface SocioProgramaPivot extends Entity {
     fecha_inscripcion: Date;
@@ -23,7 +23,7 @@ export interface SocioProgramaPivotBody {
 
 export interface UpdateSocioProgramaPivotParams extends UpdateParams<SocioProgramaPivotBody> { }
 
-export interface SearchSocioProgramaPivotsBody extends Paginated {
+export interface SearchSocioProgramaPivotsBody extends Paginated, Excel {
     search: undefined | string;
     socio_id: number;
 }
